@@ -1,0 +1,2 @@
+# ShipWar
+Simple game
