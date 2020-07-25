@@ -1,7 +1,7 @@
 package Controler;
 
 import Model.Board;
-import Model.Cell;
+import Model.CellInterface;
 import View.Printer;
 
 
@@ -12,7 +12,7 @@ public class BordController {
 
     public BordController(){
 
-        Cell[][] wholeboard = board.createBoard();
+        CellInterface[][] wholeboard = board.createBoard();
         board.setShipsOnBoard( wholeboard );
         printer.printBoard( wholeboard ) ;
 

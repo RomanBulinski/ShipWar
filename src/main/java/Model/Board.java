@@ -1,26 +1,82 @@
 package Model;
 
 import Enums.CellStateEnum;
+import Enums.ShipTypeEnum;
 
 import java.util.Random;
 
 public class Board {
 
-    public Cell[][] createBoard() {
-        Cell[][] fullBoard = new Cell[10][];
+    public CellInterface[][] createBoard() {
+        CellInterface[][] fullBoard = new CellInterface[10][];
         for (int j = 0; j < 10; j++) {
-            Cell[] row = new Cell[10];
+            CellInterface[] row = new CellInterface[10];
             for (int i = 0; i < 10; i++) {
-                row[i] = new Cell();
+                row[i] = new Sea();
             }
             fullBoard[j] = row;
         }
         return fullBoard;
     }
 
-    public Cell[][] setShipsOnBoard(Cell[][] bordOnStart) {
-        Cell[][] boardWithShips = bordOnStart;
-        return createFourMastShip( boardWithShips );
+    public CellInterface[][] setShipsOnBoard(CellInterface[][] bordOnStart) {
+        CellInterface[][] boardWithShips = bordOnStart;
+        createShip(boardWithShips, 4);
+        createShip(boardWithShips, 3);
+        createShip(boardWithShips, 3);
+        createShip(boardWithShips, 2);
+        createShip(boardWithShips, 2);
+        createShip(boardWithShips, 2);
+        createShip(boardWithShips, 1);
+        createShip(boardWithShips, 1);
+        createShip(boardWithShips, 1);
+        createShip(boardWithShips, 1);
+        return boardWithShips;
+    }
+
+    private CellInterface[][] createShip(CellInterface[][] bordOnStart, int amuoutOfMasts) {
+
+        boolean flag = true;
+        while (flag) {
+            int[] head = setShipHead();
+            if (isHorizontalDirection()) {
+                for (int i = 0; i < amuoutOfMasts; i++) {
+                    if (bordOnStart[head[0]][head[1] + i]instanceof Sea ){
+                        if(amuoutOfMasts==4){
+                            bordOnStart[head[0]][head[1] + i] = new Ship(4);
+                        }
+                        if(amuoutOfMasts==3){
+                            bordOnStart[head[0]][head[1] + i]= new Ship(3);
+                        }
+                        if(amuoutOfMasts==2){
+                            bordOnStart[head[0]][head[1] + i]= new Ship(2);
+                        }
+                        if(amuoutOfMasts==1){
+                            bordOnStart[head[0]][head[1] + i]= new Ship(1);
+                        }
+                    }
+                }
+            } else {
+                for (int i = 0; i < amuoutOfMasts; i++) {
+                    if(bordOnStart[head[0] + i][head[1]]instanceof Sea ){
+                        if(amuoutOfMasts==4){
+                            bordOnStart[head[0]+i][head[1]]= new Ship(4);
+                        }
+                        if(amuoutOfMasts==3){
+                            bordOnStart[head[0]+1][head[1]]= new Ship(3);
+                        }
+                        if(amuoutOfMasts==2){
+                            bordOnStart[head[0]+i][head[1]]= new Ship(2);
+                        }
+                        if(amuoutOfMasts==1){
+                            bordOnStart[head[0]+i][head[1]]= new Ship(1);
+                        }
+                    }
+                }
+            }
+            flag = false;
+        }
+        return bordOnStart;
     }
 
     private int[] setShipHead() {
@@ -30,13 +86,10 @@ public class Board {
         return new int[]{row, column};
     }
 
-    private Cell[][] createFourMastShip( Cell[][] bordOnStart ) {
-        int[] head = setShipHead();
-        for(int i =0; i<4; i++){
-            bordOnStart[ head[0] ] [ head[1]+i ].setCellStateEnum(CellStateEnum.SHIP_CELL);
-        }
-        return bordOnStart;
+    private boolean isHorizontalDirection() {
+        Random ran = new Random();
+        int result = ran.nextInt(2);
+        return result == 0;
     }
-
 
 }
