@@ -1,9 +1,10 @@
 package View;
+import Enums.CellStateEnum;
 import Model.Cell;
 
 public class Printer {
 
-    int indexLine = 1;
+    private int indexLine = 1;
 
     public void printBoard( Cell[][] board ){
         this.printHead();
@@ -31,12 +32,17 @@ public class Printer {
 
     private void printRow(Cell[] line) {
         for( Cell cell : line){
-            System.out.print( "x ");
+            if(cell.getCellStateEnum() == CellStateEnum.SEA_CELL ){
+                System.out.print( ".  ");
+            }else{
+                System.out.print( "o  ");
+            }
+
         }
     }
 
     private void printHead(){
-        System.out.print("    A B C D E F G H I J\n");
+        System.out.print("    A  B  C  D  E  F  G  H  I  J\n");
     }
 
 

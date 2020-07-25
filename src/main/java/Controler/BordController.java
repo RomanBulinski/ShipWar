@@ -10,11 +10,11 @@ public class BordController {
     Board board = new Board();
     Printer printer = new Printer();
 
-    Cell[][] allboard = board.createBoard();
-
     public BordController(){
 
-        printer.printBoard( allboard) ;
+        Cell[][] wholeboard = board.createBoard();
+        board.setShipsOnBoard( wholeboard );
+        printer.printBoard( wholeboard ) ;
 
     }
 
