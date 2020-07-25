@@ -36,46 +36,45 @@ public class Board {
 
     private CellInterface[][] createShip(CellInterface[][] bordOnStart, int amuoutOfMasts) {
 
-        boolean flag = true;
-        while (flag) {
-            int[] head = setShipHead();
-            if (isHorizontalDirection()) {
+        CellInterface[][] board = bordOnStart;
+        int[] head = setShipHead();
+        boolean isHorizonDirection = isHorizontalDirection();
+        if (isHorizonDirection) {
+            if (isPossibleToCreate(board, head, amuoutOfMasts, isHorizonDirection)) {
                 for (int i = 0; i < amuoutOfMasts; i++) {
-                    if (bordOnStart[head[0]][head[1] + i]instanceof Sea ){
-                        if(amuoutOfMasts==4){
-                            bordOnStart[head[0]][head[1] + i] = new Ship(4);
-                        }
-                        if(amuoutOfMasts==3){
-                            bordOnStart[head[0]][head[1] + i]= new Ship(3);
-                        }
-                        if(amuoutOfMasts==2){
-                            bordOnStart[head[0]][head[1] + i]= new Ship(2);
-                        }
-                        if(amuoutOfMasts==1){
-                            bordOnStart[head[0]][head[1] + i]= new Ship(1);
-                        }
+                    if (amuoutOfMasts == 4) {
+                        bordOnStart[head[0]][head[1] + i] = new Ship(4);
                     }
-                }
-            } else {
-                for (int i = 0; i < amuoutOfMasts; i++) {
-                    if(bordOnStart[head[0] + i][head[1]]instanceof Sea ){
-                        if(amuoutOfMasts==4){
-                            bordOnStart[head[0]+i][head[1]]= new Ship(4);
-                        }
-                        if(amuoutOfMasts==3){
-                            bordOnStart[head[0]+1][head[1]]= new Ship(3);
-                        }
-                        if(amuoutOfMasts==2){
-                            bordOnStart[head[0]+i][head[1]]= new Ship(2);
-                        }
-                        if(amuoutOfMasts==1){
-                            bordOnStart[head[0]+i][head[1]]= new Ship(1);
-                        }
+                    if (amuoutOfMasts == 3) {
+                        bordOnStart[head[0]][head[1] + i] = new Ship(3);
+                    }
+                    if (amuoutOfMasts == 2) {
+                        bordOnStart[head[0]][head[1] + i] = new Ship(2);
+                    }
+                    if (amuoutOfMasts == 1) {
+                        bordOnStart[head[0]][head[1] + i] = new Ship(1);
                     }
                 }
             }
-            flag = false;
+        } else {
+            if (isPossibleToCreate(board, head, amuoutOfMasts, isHorizonDirection)) {
+                for (int i = 0; i < amuoutOfMasts; i++) {
+                    if (amuoutOfMasts == 4) {
+                        bordOnStart[head[0] + i][head[1]] = new Ship(4);
+                    }
+                    if (amuoutOfMasts == 3) {
+                        bordOnStart[head[0] + i][head[1]] = new Ship(3);
+                    }
+                    if (amuoutOfMasts == 2) {
+                        bordOnStart[head[0] + i][head[1]] = new Ship(2);
+                    }
+                    if (amuoutOfMasts == 1) {
+                        bordOnStart[head[0] + i][head[1]] = new Ship(1);
+                    }
+                }
+            }
         }
+
         return bordOnStart;
     }
 
@@ -90,6 +89,24 @@ public class Board {
         Random ran = new Random();
         int result = ran.nextInt(2);
         return result == 0;
+    }
+
+    private boolean isPossibleToCreate(CellInterface[][] board, int[] head, int amountOfMasts, boolean isHorizontalDirection) {
+        boolean result = true;
+        if (isHorizontalDirection) {
+            for (int i = 0; i < amountOfMasts; i++) {
+                if (board[head[0]][head[1] + i] instanceof Ship) {
+                    result = false;
+                }
+            }
+        } else {
+            for (int j = 0; j < amountOfMasts; j++) {
+                if (board[head[0] + j][head[1]] instanceof Ship) {
+                    result = false;
+                }
+            }
+        }
+        return result;
     }
 
 }
