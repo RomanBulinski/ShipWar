@@ -1,7 +1,9 @@
 package View;
 
+import Enums.SeaCellTypeEnum;
 import Enums.ShipTypeEnum;
 import Model.CellInterface;
+import Model.Sea;
 import Model.Ship;
 
 public class Printer {
@@ -34,17 +36,19 @@ public class Printer {
 
     private void printRow(CellInterface[] line) {
         for (CellInterface cell : line) {
-            if(cell instanceof Ship){
+            if (cell instanceof Ship) {
                 if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.ONE_MAST) {
                     System.out.print("1  ");
-                }else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.TWO_MASTS) {
+                } else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.TWO_MASTS) {
                     System.out.print("2  ");
-                }else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.TREE_MASTS) {
+                } else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.TREE_MASTS) {
                     System.out.print("3  ");
-                }else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.FOUR_MAST) {
+                } else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.FOUR_MAST) {
                     System.out.print("4  ");
                 }
-            }else{
+            } else if (cell instanceof Sea && ((Sea) cell).getSeaCellTypeEnum() == SeaCellTypeEnum.EMPTY_SPACE) {
+                System.out.print("-  ");
+            } else {
                 System.out.print(".  ");
             }
         }

@@ -3,5 +3,5 @@ package Enums;
 public enum SeaCellTypeEnum {
     LIVE,
     DEAD,
-    ISNEIGHBOR
+    EMPTY_SPACE
 }

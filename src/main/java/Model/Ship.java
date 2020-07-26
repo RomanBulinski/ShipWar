@@ -31,6 +31,11 @@ public class Ship implements CellInterface {
         return shipCellTypeEnum;
     }
 
+    @Override
+    public void setEmptySpace() {
+
+    }
+
     public ShipTypeEnum getShipTypeEnum() {
         return shipTypeEnum;
     }
