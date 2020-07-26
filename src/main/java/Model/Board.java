@@ -1,5 +1,7 @@
 package Model;
 
+import Enums.SeaCellTypeEnum;
+
 import java.util.Random;
 
 public class Board {
@@ -131,13 +133,19 @@ public class Board {
         boolean result = true;
         if (isHorizontalDirection) {
             for (int i = 0; i < amountOfMasts; i++) {
-                if ( head[1] + i <0 ||  head[1] + i > 9 || board[head[0]][head[1] + i] instanceof Ship) {
+                if ( head[1] + i <0 ||
+                        head[1] + i > 9
+                        || board[head[0]][head[1] + i] instanceof Ship
+                        || board[head[0]][head[1] + i].getType() == SeaCellTypeEnum.EMPTY_SPACE) {
                     result = false;
                 }
             }
         } else {
             for (int j = 0; j < amountOfMasts; j++) {
-                if (  head[0]+ j < 0 || head[0]+ j > 9 || board[head[0] + j][head[1]] instanceof Ship) {
+                if (  head[0]+ j < 0
+                        || head[0]+ j > 9
+                        || board[head[0] + j][head[1]] instanceof Ship
+                        || board[head[0] + j][head[1]].getType() == SeaCellTypeEnum.EMPTY_SPACE) {
                     result = false;
                 }
             }
