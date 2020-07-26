@@ -12,10 +12,9 @@ public class BordController {
 
     public BordController(){
 
-        CellInterface[][] wholeboard = board.createBoard();
-        board.setShipsOnBoard( wholeboard );
-        printer.printBoard( wholeboard ) ;
-
+        CellInterface[][] seaboard = board.createBoard();
+        board.setShipsOnBoard( seaboard );
+        printer.printBoard( seaboard ) ;
     }
 
 }
