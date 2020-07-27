@@ -8,6 +8,7 @@ public class Board {
 
     private final int TOP_LIMIT = 10;
     private final int ZERO = 0;
+    private final int ONE = 1;
     private final String[] shipsId = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
 
     public CellInterface[][] createBoard() {
@@ -25,18 +26,14 @@ public class Board {
     public void setShipsOnBoard(CellInterface[][] bordOnStart) {
         int amountOfShips = 4;
         int indexIdis = ZERO;
-        for (int masts = 1; masts < 5; masts++) {
+        for (int masts = ONE; masts < 5; masts++) {
             for (int j = amountOfShips; j > ZERO; j--) {
                 String shipId = shipsId[indexIdis];
                 createShipCell(bordOnStart, masts, shipId);
             }
             indexIdis++;
-            amountOfShips = amountOfShips - 1;
+            amountOfShips--;
         }
-    }
-
-    public void hitBoard(int row, int column, CellInterface[][] bordOnStart) {
-        bordOnStart[row][column].hit();
     }
 
     private void createShipCell(CellInterface[][] bordOnStart, int amuoutOfMasts, String shipId) {
@@ -49,8 +46,8 @@ public class Board {
         while (flag) {
             if (isHorizonDirection) {
                 if (isPossibleToCreate(board, head, amuoutOfMasts, isHorizonDirection)) {
-                    int row = head[0];
-                    int column = head[1];
+                    int row = head[ZERO];
+                    int column = head[ONE];
                     for (int i = ZERO; i < amuoutOfMasts; i++) {
                         bordOnStart[row][column + i] = new Ship(amuoutOfMasts);
                         bordOnStart[row][column + i].setId(shipId);
@@ -63,7 +60,7 @@ public class Board {
             } else {
                 if (isPossibleToCreate(board, head, amuoutOfMasts, isHorizonDirection)) {
                     int row = head[0];
-                    int column = head[1];
+                    int column = head[ONE];
                     for (int i = ZERO; i < amuoutOfMasts; i++) {
                         bordOnStart[row + i][column] = new Ship(amuoutOfMasts);
                         bordOnStart[row + i][column].setId(shipId);
@@ -77,57 +74,72 @@ public class Board {
         }
     }
 
+    public void hitBoard(int row, int column, CellInterface[][] bordOnStart) {
+        bordOnStart[row][column].hit();
+    }
+
     private void setGapsForHorizontalShip(CellInterface[][] bordOnStart, int row, int column, int i) {
-        if (row + 1 < TOP_LIMIT) {
-            bordOnStart[row + 1][column + i].setEmptySpace();
+        //TODO implment
+//        int leftCell = column - ONE;
+//        int rightCell = column + ONE;
+//        int upCell = row + i - ONE;
+//        int bottomCell = row + i + ONE;
+
+        if (row + ONE < TOP_LIMIT) {
+            bordOnStart[row + ONE][column + i].setEmptySpace();
         }
-        if (row - 1 >= ZERO && row - 1 < TOP_LIMIT) {
-            bordOnStart[row - 1][column + i].setEmptySpace();
+        if (row - ONE >= ZERO && row - ONE < TOP_LIMIT) {
+            bordOnStart[row - ONE][column + i].setEmptySpace();
         }
-        if (column + i - 1 >= ZERO && column + i - 1 < TOP_LIMIT) {
-            bordOnStart[row][column + i - 1].setEmptySpace();
+        if (column + i - ONE >= ZERO && column + i - ONE < TOP_LIMIT) {
+            bordOnStart[row][column + i - ONE].setEmptySpace();
         }
-        if (column + i + 1 >= ZERO && column + i + 1 < TOP_LIMIT) {
-            bordOnStart[row][column + i + 1].setEmptySpace();
+        if (column + i + ONE >= ZERO && column + i + ONE < TOP_LIMIT) {
+            bordOnStart[row][column + i + ONE].setEmptySpace();
         }
-        if (column + i - 1 >= ZERO && column + i - 1 < TOP_LIMIT && row - 1 >= 0 && row - 1 < TOP_LIMIT) {
-            bordOnStart[row - 1][column + i - 1].setEmptySpace();
+        if (column + i - ONE >= ZERO && column + i - ONE < TOP_LIMIT && row - ONE >= 0 && row - ONE < TOP_LIMIT) {
+            bordOnStart[row - ONE][column + i - ONE].setEmptySpace();
         }
-        if (column + i + 1 >= ZERO && column + i + 1 < TOP_LIMIT && row + 1 < TOP_LIMIT) {
-            bordOnStart[row + 1][column + i + 1].setEmptySpace();
+        if (column + i + ONE >= ZERO && column + i + ONE < TOP_LIMIT && row + ONE < TOP_LIMIT) {
+            bordOnStart[row + ONE][column + i + ONE].setEmptySpace();
         }
-        if (column + i + 1 >= ZERO && column + i + 1 < TOP_LIMIT && row - 1 >= 0 && row - 1 < TOP_LIMIT) {
-            bordOnStart[row - 1][column + i + 1].setEmptySpace();
+        if (column + i + ONE >= ZERO && column + i + ONE < TOP_LIMIT && row - ONE >= 0 && row - ONE < TOP_LIMIT) {
+            bordOnStart[row - ONE][column + i + ONE].setEmptySpace();
         }
-        if (column + i - 1 >= ZERO && column + i - 1 < 10 && row + 1 < TOP_LIMIT) {
-            bordOnStart[row + 1][column + i - 1].setEmptySpace();
+        if (column + i - ONE >= ZERO && column + i - ONE < 10 && row + ONE < TOP_LIMIT) {
+            bordOnStart[row + ONE][column + i - ONE].setEmptySpace();
         }
     }
 
     private void setGapsForVerticalShip(CellInterface[][] bordOnStart, int row, int column, int i) {
-        if (column - 1 >= ZERO && column - 1 < TOP_LIMIT) {
-            bordOnStart[row + i][column - 1].setEmptySpace();
+        int leftCell = column - ONE;
+        int rightCell = column + ONE;
+        int upCell = row + i - ONE;
+        int bottomCell = row + i + ONE;
+
+        if (ZERO <= leftCell && leftCell < TOP_LIMIT) {
+            bordOnStart[row + i][leftCell].setEmptySpace();
         }
-        if (column + 1 < TOP_LIMIT) {
-            bordOnStart[row + i][column + 1].setEmptySpace();
+        if (rightCell < TOP_LIMIT) {
+            bordOnStart[row + i][rightCell].setEmptySpace();
         }
-        if (row + i + 1 >= 0 && row + i + 1 < TOP_LIMIT) {
-            bordOnStart[row + i + 1][column].setEmptySpace();
+        if (row + i + ONE >= 0 && row + i + ONE < TOP_LIMIT) {
+            bordOnStart[bottomCell][column].setEmptySpace();
         }
-        if (row + i - 1 >= ZERO && row + i - 1 < TOP_LIMIT) {
-            bordOnStart[row + i - 1][column].setEmptySpace();
+        if (  ZERO <= upCell && upCell < TOP_LIMIT) {
+            bordOnStart[upCell][column].setEmptySpace();
         }
-        if (column - 1 >= ZERO && column - 1 < TOP_LIMIT && row - 1 >= ZERO && row - 1 < TOP_LIMIT) {
-            bordOnStart[row + i - 1][column - 1].setEmptySpace();
+        if (leftCell >= ZERO && leftCell < TOP_LIMIT && row - ONE >= ZERO && row - ONE < TOP_LIMIT) {
+            bordOnStart[upCell][leftCell].setEmptySpace();
         }
-        if (column + 1 < TOP_LIMIT && row + i + 1 >= 0 && row + i + 1 < TOP_LIMIT) {
-            bordOnStart[row + i + 1][column + 1].setEmptySpace();
+        if (rightCell < TOP_LIMIT && bottomCell>= 0 && bottomCell < TOP_LIMIT) {
+            bordOnStart[bottomCell][rightCell].setEmptySpace();
         }
-        if (column + 1 < TOP_LIMIT && row + i - 1 >= 0 && row + i - 1 < TOP_LIMIT) {
-            bordOnStart[row + i - 1][column + 1].setEmptySpace();
+        if (rightCell < TOP_LIMIT && upCell >= 0 && upCell < TOP_LIMIT) {
+            bordOnStart[upCell][rightCell].setEmptySpace();
         }
-        if (column - 1 >= ZERO && column - 1 < TOP_LIMIT && row + i + 1 >= ZERO && row + i + 1 < TOP_LIMIT) {
-            bordOnStart[row + i + 1][column - 1].setEmptySpace();
+        if (ZERO <= leftCell && leftCell < TOP_LIMIT && bottomCell >= ZERO && bottomCell < TOP_LIMIT) {
+            bordOnStart[bottomCell][leftCell].setEmptySpace();
         }
     }
 
@@ -147,10 +159,10 @@ public class Board {
     private boolean isPossibleToCreate(CellInterface[][] board, Integer[] head, int amountOfMasts, boolean isHorizontalDirection) {
         if (isHorizontalDirection) {
             for (int i = 0; i < amountOfMasts; i++) {
-                if (head[1] + i < ZERO
-                        || head[1] + i > 9
-                        || board[head[0]][head[1] + i] instanceof Ship
-                        || board[head[0]][head[1] + i].getType() == SeaCellTypeEnum.EMPTY_SPACE) {
+                if (head[ONE] + i < ZERO
+                        || head[ONE] + i > 9
+                        || board[head[0]][head[ONE] + i] instanceof Ship
+                        || board[head[0]][head[ONE] + i].getType() == SeaCellTypeEnum.EMPTY_SPACE) {
                     return false;
                 }
             }
@@ -158,8 +170,8 @@ public class Board {
             for (int j = 0; j < amountOfMasts; j++) {
                 if (head[0] + j < 0
                         || head[0] + j > 9
-                        || board[head[0] + j][head[1]] instanceof Ship
-                        || board[head[0] + j][head[1]].getType() == SeaCellTypeEnum.EMPTY_SPACE) {
+                        || board[head[0] + j][head[ONE]] instanceof Ship
+                        || board[head[0] + j][head[ONE]].getType() == SeaCellTypeEnum.EMPTY_SPACE) {
                     return false;
                 }
             }
