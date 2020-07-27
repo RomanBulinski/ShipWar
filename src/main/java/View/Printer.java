@@ -22,56 +22,48 @@ public class Printer {
     }
 
     private void goToNewRow() {
-        System.out.print("\n");
+        printMessage("\n");
         indexLine++;
     }
 
     //TODO change to ternary operator
     private void printLineIndex() {
         if (indexLine < 10) {
-            System.out.print(" " + indexLine);
+            printMessage(" " + indexLine);
         } else {
-            System.out.print(10);
+            printMessage("" + 10);
         }
-        System.out.print("  ");
+        printMessage("  ");
     }
 
     private void printRow(CellInterface[] line) {
         for (CellInterface cell : line) {
             if (cell instanceof Ship) {
                 if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.ONE_MAST) {
-                    if (((Ship) cell).getShipCellTypeEnum() == ShipCellTypeEnum.DEAD) {
-                        System.out.print("X  ");
-                    }else{
-                        System.out.print("1  ");
-                    }
+                    printShipCell((Ship) cell, "1  ");
                 } else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.TWO_MASTS) {
-                    if (((Ship) cell).getShipCellTypeEnum() == ShipCellTypeEnum.DEAD) {
-                        System.out.print("X  ");
-                    }else{
-                        System.out.print("2  ");
-                    }
+                    printShipCell((Ship) cell, "2  ");
                 } else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.TREE_MASTS) {
-                    if (((Ship) cell).getShipCellTypeEnum() == ShipCellTypeEnum.DEAD) {
-                        System.out.print("X  ");
-                    }else{
-                        System.out.print("3  ");
-                    }
+                    printShipCell((Ship) cell, "3  ");
                 } else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.FOUR_MAST) {
-                    if (((Ship) cell).getShipCellTypeEnum() == ShipCellTypeEnum.DEAD) {
-                        System.out.print("X  ");
-                    }else{
-                        System.out.print("4 ");
-                    }
+                    printShipCell((Ship) cell, "4  ");
                 }
 
             } else if (((Sea) cell).getSeaCellTypeEnum() == SeaCellTypeEnum.EMPTY_SPACE) {
-                System.out.print(".  ");
+                printMessage(".  ");
             } else if (((Sea) cell).getSeaCellTypeEnum() == SeaCellTypeEnum.DEAD) {
-                System.out.print("x  ");
+                printMessage("x  ");
             } else {
-                System.out.print(".  ");
+                printMessage(".  ");
             }
+        }
+    }
+
+    private void printShipCell(Ship cell, String s) {
+        if (cell.getShipCellTypeEnum() == ShipCellTypeEnum.DEAD) {
+            printMessage("X  ");
+        } else {
+            printMessage(s);
         }
     }
 
@@ -79,8 +71,11 @@ public class Printer {
         System.out.print("    A  B  C  D  E  F  G  H  I  J\n");
     }
 
-    public void printMessage(String message){
-        System.out.print( message );
+    public void printMessage(String message) {
+        System.out.print(message);
     }
 
+    public void gap() {
+        System.out.print("\n");
+    }
 }

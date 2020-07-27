@@ -10,13 +10,14 @@ public class BordController {
 
     Board board = new Board();
     Printer printer = new Printer();
+    InputOutput inputOutput = new InputOutput();
 
     public BordController(){
 
         printer.printMessage("START GAME");
+        printer.gap();
 
         CellInterface[][] seaboard = board.createBoard();
-        InputOutput inputOutput = new InputOutput();
         board.setShipsOnBoard( seaboard );
         printer.printBoard( seaboard ) ;
 
