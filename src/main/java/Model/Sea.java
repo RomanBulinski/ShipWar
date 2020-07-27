@@ -25,6 +25,11 @@ public class Sea implements CellInterface {
             this.seaCellTypeEnum = SeaCellTypeEnum.EMPTY_SPACE;
     }
 
+    @Override
+    public void setId(String id) {
+        //TODO nothing to do
+    }
+
     public SeaCellTypeEnum getSeaCellTypeEnum() {
         return seaCellTypeEnum;
     }

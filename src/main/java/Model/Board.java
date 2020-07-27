@@ -6,6 +6,9 @@ import java.util.Random;
 
 public class Board {
 
+    private int TOP_LIMIT = 10;
+    private String[] shipsId = { "a","b","c","d","e","f","g","h","i","j"};
+
     public CellInterface[][] createBoard() {
         CellInterface[][] fullBoard = new CellInterface[10][];
         for (int j = 0; j < 10; j++) {
@@ -19,16 +22,23 @@ public class Board {
     }
 
     public void setShipsOnBoard(CellInterface[][] bordOnStart) {
-        int masts = 4;
-        for(int i = 1; i<5; i++){
-            for(int j = masts; j>0; j--){
-                createShip(bordOnStart, i);
+        int amountOfShips = 4;
+        int indexIdis = 0;
+        for(int masts = 1; masts<5; masts++){
+            for(int j = amountOfShips; j>0; j--){
+                String shipId = shipsId[indexIdis];
+                createShipCell(bordOnStart, masts, shipId);
             }
-            masts = masts-1;
+            indexIdis++;
+            amountOfShips = amountOfShips-1;
         }
     }
 
-    private void createShip(CellInterface[][] bordOnStart, int amuoutOfMasts) {
+    public void hitBoard(int row, int column, CellInterface[][] bordOnStart){
+        bordOnStart[row][column].hit();
+    }
+
+    private void createShipCell(CellInterface[][] bordOnStart, int amuoutOfMasts, String shipId ) {
 
         Integer[] head = setShipHead();
         CellInterface[][] board = bordOnStart;
@@ -38,34 +48,35 @@ public class Board {
         while (flag) {
             if (isHorizonDirection) {
                 if (isPossibleToCreate(board, head, amuoutOfMasts, isHorizonDirection)) {
+                    int row = head[0];
+                    int column = head[1];
                     for (int i = 0; i < amuoutOfMasts; i++) {
-                        //TODO here is exception
-                        bordOnStart[head[0]][head[1] + i] = new Ship(amuoutOfMasts);
+                        bordOnStart[row][column+ i] = new Ship(amuoutOfMasts);
+                        bordOnStart[row][column+ i].setId(shipId);
 
-
-                        if (head[0] + 1 >= 0 && head[0] + 1 < 10) {
-                            bordOnStart[head[0] + 1][head[1] + i].setEmptySpace();
+                        if ( row+ 1 < 10) {
+                            bordOnStart[row+ 1][column+ i].setEmptySpace();
                         }
-                        if (head[0] - 1 >= 0 && head[0] - 1 < 10) {
-                            bordOnStart[head[0] - 1][head[1] + i].setEmptySpace();
+                        if (row- 1 >= 0 && row- 1 < 10) {
+                            bordOnStart[row- 1][column+ i].setEmptySpace();
                         }
-                        if (head[1] + i - 1 >= 0 && head[1] + i - 1 < 10) {
-                            bordOnStart[head[0]][head[1] + i - 1].setEmptySpace();
+                        if (column+ i - 1 >= 0 && column+ i - 1 < 10) {
+                            bordOnStart[head[0]][column+ i - 1].setEmptySpace();
                         }
-                        if (head[1] + i + 1 >= 0 && head[1] + i + 1 < 10) {
-                            bordOnStart[head[0]][head[1] + i + 1].setEmptySpace();
+                        if (column+ i + 1 >= 0 && column+ i + 1 < 10) {
+                            bordOnStart[head[0]][column+ i + 1].setEmptySpace();
                         }
-                        if (head[1] + i - 1 >= 0 && head[1] + i - 1 < 10 && head[0] - 1 >= 0 && head[0] - 1 < 10) {
-                            bordOnStart[head[0] - 1][head[1] + i - 1].setEmptySpace();
+                        if (column+ i - 1 >= 0 && column+ i - 1 < 10 && row- 1 >= 0 && row- 1 < 10) {
+                            bordOnStart[row- 1][column+ i - 1].setEmptySpace();
                         }
-                        if (head[1] + i + 1 >= 0 && head[1] + i + 1 < 10 && head[0] + 1 >= 0 && head[0] + 1 < 10) {
-                            bordOnStart[head[0] + 1][head[1] + i + 1].setEmptySpace();
+                        if (column+ i + 1 >= 0 && column+ i + 1 < 10 && row+ 1 < 10) {
+                            bordOnStart[row+ 1][column+ i + 1].setEmptySpace();
                         }
-                        if (head[1] + i + 1 >= 0 && head[1] + i + 1 < 10 && head[0] - 1 >= 0 && head[0] - 1 < 10) {
-                            bordOnStart[head[0] - 1][head[1] + i + 1].setEmptySpace();
+                        if (column+ i + 1 >= 0 && column+ i + 1 < 10 && row- 1 >= 0 && row- 1 < 10) {
+                            bordOnStart[row- 1][column+ i + 1].setEmptySpace();
                         }
-                        if (head[1] + i - 1 >= 0 && head[1] + i - 1 < 10 && head[0] + 1 >= 0 && head[0] + 1 < 10) {
-                            bordOnStart[head[0] + 1][head[1] + i - 1].setEmptySpace();
+                        if (column+ i - 1 >= 0 && column+ i - 1 < 10 && row+ 1 < 10) {
+                            bordOnStart[row+ 1][column+ i - 1].setEmptySpace();
                         }
                     }
                     flag = false;
@@ -74,33 +85,35 @@ public class Board {
                 }
             } else {
                 if (isPossibleToCreate(board, head, amuoutOfMasts, isHorizonDirection)) {
+                    int row = head[0];
+                    int column = head[1];
                     for (int i = 0; i < amuoutOfMasts; i++) {
-                        //TODO here is exception
-                        bordOnStart[head[0] + i][head[1]] = new Ship(amuoutOfMasts);
+                        bordOnStart[row + i][column] = new Ship(amuoutOfMasts);
+                        bordOnStart[row + i][column].setId(shipId);
 
-                        if (head[1] - 1 >= 0 && head[1] - 1 < 10) {
-                            bordOnStart[head[0] + i][head[1] - 1].setEmptySpace();
+                        if (column - 1 >= 0 && column - 1 < 10) {
+                            bordOnStart[row + i][column - 1].setEmptySpace();
                         }
-                        if (head[1] + 1 >= 0 && head[1] + 1 < 10) {
-                            bordOnStart[head[0] + i][head[1] + 1].setEmptySpace();
+                        if (column + 1 < 10) {
+                            bordOnStart[row + i][column + 1].setEmptySpace();
                         }
-                        if (head[0] + i + 1 >= 0 && head[0] + i + 1 < 10) {
-                            bordOnStart[head[0] + i + 1][head[1]].setEmptySpace();
+                        if (row + i + 1 >= 0 && row + i + 1 < 10) {
+                            bordOnStart[row + i + 1][column].setEmptySpace();
                         }
-                        if (head[0] + i - 1 >= 0 && head[0] + i - 1 < 10) {
-                            bordOnStart[head[0] + i - 1][head[1]].setEmptySpace();
+                        if (row + i - 1 >= 0 && row + i - 1 < 10) {
+                            bordOnStart[row + i - 1][column].setEmptySpace();
                         }
-                        if (head[1] - 1 >= 0 && head[1] - 1 < 10 && head[0] - 1 >= 0 && head[0] - 1 < 10) {
-                            bordOnStart[head[0] + i - 1][head[1] - 1].setEmptySpace();
+                        if (column - 1 >= 0 && column - 1 < 10 && row - 1 >= 0 && row - 1 < 10) {
+                            bordOnStart[row + i - 1][column - 1].setEmptySpace();
                         }
-                        if (head[1] + 1 >= 0 && head[1] + 1 < 10 && head[0] + i + 1 >= 0 && head[0] +i+ 1 < 10) {
-                            bordOnStart[head[0] + i + 1][head[1] + 1].setEmptySpace();
+                        if (column + 1 < 10 && row + i + 1 >= 0 && row +i+ 1 < 10) {
+                            bordOnStart[row + i + 1][column + 1].setEmptySpace();
                         }
-                        if (head[1] + 1 >= 0 && head[1] + 1 < 10 && head[0] + i - 1 >= 0 && head[0] + i - 1 < 10) {
-                            bordOnStart[head[0] + i - 1][head[1] + 1].setEmptySpace();
+                        if (column + 1 < 10 && row + i - 1 >= 0 && row + i - 1 < 10) {
+                            bordOnStart[row + i - 1][column + 1].setEmptySpace();
                         }
-                        if (head[1] - 1 >= 0 && head[1] - 1 < 10 && head[0] + i + 1 >= 0 && head[0] + i + 1 < 10) {
-                            bordOnStart[head[0] + i + 1][head[1] - 1].setEmptySpace();
+                        if (column - 1 >= 0 && column - 1 < 10 && row + i + 1 >= 0 && row + i + 1 < 10) {
+                            bordOnStart[row + i + 1][column - 1].setEmptySpace();
                         }
                     }
                     flag = false;

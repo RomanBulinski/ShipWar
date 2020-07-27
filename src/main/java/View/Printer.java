@@ -1,6 +1,7 @@
 package View;
 
 import Enums.SeaCellTypeEnum;
+import Enums.ShipCellTypeEnum;
 import Enums.ShipTypeEnum;
 import Model.CellInterface;
 import Model.Sea;
@@ -17,6 +18,7 @@ public class Printer {
             this.printRow(line);
             this.goToNewRow();
         }
+        indexLine = 1;
     }
 
     private void goToNewRow() {
@@ -38,16 +40,35 @@ public class Printer {
         for (CellInterface cell : line) {
             if (cell instanceof Ship) {
                 if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.ONE_MAST) {
-                    System.out.print("1  ");
+                    if (((Ship) cell).getShipCellTypeEnum() == ShipCellTypeEnum.DEAD) {
+                        System.out.print("X  ");
+                    }else{
+                        System.out.print("1  ");
+                    }
                 } else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.TWO_MASTS) {
-                    System.out.print("2  ");
+                    if (((Ship) cell).getShipCellTypeEnum() == ShipCellTypeEnum.DEAD) {
+                        System.out.print("X  ");
+                    }else{
+                        System.out.print("2  ");
+                    }
                 } else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.TREE_MASTS) {
-                    System.out.print("3  ");
+                    if (((Ship) cell).getShipCellTypeEnum() == ShipCellTypeEnum.DEAD) {
+                        System.out.print("X  ");
+                    }else{
+                        System.out.print("3  ");
+                    }
                 } else if (((Ship) cell).getShipTypeEnum() == ShipTypeEnum.FOUR_MAST) {
-                    System.out.print("4  ");
+                    if (((Ship) cell).getShipCellTypeEnum() == ShipCellTypeEnum.DEAD) {
+                        System.out.print("X  ");
+                    }else{
+                        System.out.print("4 ");
+                    }
                 }
-            } else if (cell instanceof Sea && ((Sea) cell).getSeaCellTypeEnum() == SeaCellTypeEnum.EMPTY_SPACE) {
-                System.out.print("-  ");
+
+            } else if (((Sea) cell).getSeaCellTypeEnum() == SeaCellTypeEnum.EMPTY_SPACE) {
+                System.out.print(".  ");
+            } else if (((Sea) cell).getSeaCellTypeEnum() == SeaCellTypeEnum.DEAD) {
+                System.out.print("x  ");
             } else {
                 System.out.print(".  ");
             }
@@ -58,5 +79,8 @@ public class Printer {
         System.out.print("    A  B  C  D  E  F  G  H  I  J\n");
     }
 
+    public void printMessage(String message){
+        System.out.print( message );
+    }
 
 }

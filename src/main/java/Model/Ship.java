@@ -7,6 +7,7 @@ public class Ship implements CellInterface {
 
     ShipTypeEnum shipTypeEnum;
     ShipCellTypeEnum shipCellTypeEnum;
+    String shipCellId;
 
     public Ship(int amountOfMasts) {
         shipCellTypeEnum = ShipCellTypeEnum.LIVE;
@@ -36,6 +37,11 @@ public class Ship implements CellInterface {
 
     }
 
+    @Override
+    public void setId(String shipCellId) {
+        this.shipCellId = shipCellId;
+    }
+
     public ShipTypeEnum getShipTypeEnum() {
         return shipTypeEnum;
     }
@@ -48,8 +54,10 @@ public class Ship implements CellInterface {
         return shipCellTypeEnum;
     }
 
-    public void setShipCellTypeEnum(ShipCellTypeEnum shipCellTypeEnum) {
-        this.shipCellTypeEnum = shipCellTypeEnum;
-    }
+    public void setShipCellTypeEnum(ShipCellTypeEnum shipCellTypeEnum) { this.shipCellTypeEnum = shipCellTypeEnum; }
+
+    public String getId() { return shipCellId; }
+
+
 
 }
