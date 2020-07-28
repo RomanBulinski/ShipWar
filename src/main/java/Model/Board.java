@@ -10,9 +10,19 @@ public class Board {
     private final int ZERO = 0;
     private final int ONE = 1;
     private final String[] shipsId = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
+    CellInterface[][] fullBoard = new CellInterface[TOP_LIMIT][];
+    Player owner;
 
-    public CellInterface[][] createBoard() {
-        CellInterface[][] fullBoard = new CellInterface[TOP_LIMIT][];
+
+    public Player getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Player owner) {
+        this.owner = owner;
+    }
+
+    public void setBoard() {
         for (int j = ZERO; j < TOP_LIMIT; j++) {
             CellInterface[] row = new CellInterface[TOP_LIMIT];
             for (int i = ZERO; i < TOP_LIMIT; i++) {
@@ -20,16 +30,19 @@ public class Board {
             }
             fullBoard[j] = row;
         }
-        return fullBoard;
     }
 
-    public void setShipsOnBoard(CellInterface[][] bordOnStart) {
+    public CellInterface[][] getBoard() {
+        return this.fullBoard;
+    }
+
+    public void setShipsOnBoard() {
         int amountOfShips = 4;
         int indexIdis = ZERO;
         for (int masts = ONE; masts < 5; masts++) {
             for (int j = amountOfShips; j > ZERO; j--) {
                 String shipId = shipsId[indexIdis];
-                createShipCell(bordOnStart, masts, shipId);
+                createShipCell(fullBoard, masts, shipId);
             }
             indexIdis++;
             amountOfShips--;
@@ -138,7 +151,7 @@ public class Board {
         if (rightCell < TOP_LIMIT && upCell >= 0 && upCell < TOP_LIMIT) {
             bordOnStart[upCell][rightCell].setEmptySpace();
         }
-        if (ZERO <= leftCell && leftCell < TOP_LIMIT && bottomCell >= ZERO && bottomCell < TOP_LIMIT) {
+        if (ZERO <= leftCell && leftCell < TOP_LIMIT && ZERO <= bottomCell && bottomCell < TOP_LIMIT) {
             bordOnStart[bottomCell][leftCell].setEmptySpace();
         }
     }

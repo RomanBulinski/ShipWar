@@ -3,6 +3,7 @@ package View;
 import Enums.SeaCellTypeEnum;
 import Enums.ShipCellTypeEnum;
 import Enums.ShipTypeEnum;
+import Model.Board;
 import Model.CellInterface;
 import Model.Sea;
 import Model.Ship;
@@ -11,14 +12,16 @@ public class Printer {
 
     private int indexLine = 1;
 
-    public void printBoard(CellInterface[][] board) {
+    public void printBoard( Board board ) {
         this.printHead();
-        for (CellInterface[] line : board) {
+        for (CellInterface[] line : board.getBoard()) {
             this.printLineIndex();
             this.printRow(line);
             this.goToNewRow();
         }
         indexLine = 1;
+        this.printMessage(  board.getOwner().getName() );
+        this.gap();
     }
 
     private void goToNewRow() {
@@ -76,6 +79,6 @@ public class Printer {
     }
 
     public void gap() {
-        System.out.print("\n");
+        System.out.print("\n\n");
     }
 }

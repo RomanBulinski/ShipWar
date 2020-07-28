@@ -5,7 +5,6 @@ import Model.CellInterface;
 import View.InputOutput;
 import View.Printer;
 
-
 public class BordController {
 
     Board board = new Board();
@@ -17,9 +16,9 @@ public class BordController {
         printer.printMessage("START GAME");
         printer.gap();
 
-        CellInterface[][] seaboard = board.createBoard();
-        board.setShipsOnBoard( seaboard );
-        printer.printBoard( seaboard ) ;
+        board.setBoard();
+        board.setShipsOnBoard( );
+        printer.printBoard( board ) ;
 
         while(true){
 
@@ -28,13 +27,9 @@ public class BordController {
             printer.printMessage("Podaj kolumne : ");
             int column = inputOutput.getInput();
 
-            board.hitBoard(row,column,seaboard);
-            printer.printBoard( seaboard ) ;
+            board.hitBoard(row,column,board.getBoard());
+            printer.printBoard( board ) ;
 
         }
-
-
-
     }
-
 }
