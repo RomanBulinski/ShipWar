@@ -18,18 +18,37 @@ public class Printer {
             this.printLineIndex();
             this.printRow(line);
             this.goToNewRow();
+            indexLine++;
         }
         indexLine = 1;
         this.printMessage(  board.getOwner().getName() );
         this.gap();
     }
 
-    private void goToNewRow() {
-        printMessage("\n");
-        indexLine++;
+    public void printTwoBoards( Board board1, Board board2 ) {
+        this.printHeads();
+
+        CellInterface[][] rows1 = board1.getBoard();
+        CellInterface[][] rows2 = board2.getBoard();
+
+        for(int i = 0; i<10; i++){
+            this.printLineIndex();
+            this.printRow(rows1[i]);
+            this.printEmptySpace();
+            this.printLineIndex();
+            this.printRow(rows2[i]);
+            this.goToNewRow();
+            indexLine++;
+        }
+        indexLine = 1;
+        this.printMessage(  board1.getOwner().getName() );
+        this.gap();
     }
 
-    //TODO change to ternary operator
+    private void goToNewRow() {
+        printMessage("\n");
+    }
+
     private void printLineIndex() {
         if (indexLine < 10) {
             printMessage(" " + indexLine);
@@ -71,7 +90,17 @@ public class Printer {
     }
 
     private void printHead() {
-        System.out.print("    A  B  C  D  E  F  G  H  I  J\n");
+        System.out.print("    A  B  C  D  E  F  G  H  I  J");
+    }
+
+    private void printHeads() {
+        printEmptySpace();
+        System.out.print(" A  B  C  D  E  F  G  H  I  J");
+        printEmptySpace();
+        printEmptySpace();
+        printEmptySpace();
+        System.out.print("A  B  C  D  E  F  G  H  I  J");
+        this.goToNewRow();
     }
 
     public void printMessage(String message) {
@@ -80,5 +109,9 @@ public class Printer {
 
     public void gap() {
         System.out.print("\n\n");
+    }
+
+    public void printEmptySpace() {
+        System.out.print("   ");
     }
 }

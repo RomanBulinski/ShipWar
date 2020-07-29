@@ -32,10 +32,12 @@ public class GameController {
         player1 = new Player("Jarosław", PlayerTypeEnum.HUMAN, board1);
         player2 = new Player("Lech", PlayerTypeEnum.COMPUTER, board2);
 
-        printer.printBoard(board1);
-        printer.printBoard(board2);
+//        printer.printBoard(board1);
+//        printer.printBoard(board2);
 
         while(true){
+
+            printer.printTwoBoards( board1, board2 ) ;
 
             printer.printMessage("Podaj rzad : ");
             int row = inputOutput.getInput();
@@ -50,11 +52,9 @@ public class GameController {
             printer.gap();
             printer.printBoard( board2 ) ;
 
+
+
         }
-
     }
-
-
-
 
 }
