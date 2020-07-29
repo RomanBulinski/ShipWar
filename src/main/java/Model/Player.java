@@ -40,4 +40,8 @@ public class Player {
         this.playerTypeEnum = playerTypeEnum;
     }
 
+    public void hitEnemyBoard(int row, int column, Board board) {
+        board.hitBoard(row, column, board.getBoard() );
+    }
+
 }

@@ -7,6 +7,10 @@ import Model.Player;
 import View.InputOutput;
 import View.Printer;
 
+import java.util.Random;
+
+import static java.lang.Thread.sleep;
+
 public class GameController {
 
     Game game = new Game();
@@ -17,7 +21,7 @@ public class GameController {
     Printer printer = new Printer();
     InputOutput inputOutput = new InputOutput();
 
-    public GameController(){
+    public GameController()  {
 
         board1.setBoard();
         board1.setShipsOnBoard();
@@ -32,29 +36,38 @@ public class GameController {
         player1 = new Player("Jarosław", PlayerTypeEnum.HUMAN, board1);
         player2 = new Player("Lech", PlayerTypeEnum.COMPUTER, board2);
 
-//        printer.printBoard(board1);
-//        printer.printBoard(board2);
+        boolean flag = true;
 
-        while(true){
-
-            printer.printTwoBoards( board1, board2 ) ;
-
-            printer.printMessage("Podaj rzad : ");
-            int row = inputOutput.getInput();
-            printer.printMessage("Podaj kolumne : ");
-            int column = inputOutput.getInput();
-
-            board1.hitBoard(row,column,board1.getBoard());
+        do {
             printer.gap();
-            printer.printBoard( board1 ) ;
+            printer.printTwoBoards(board1, board2);
 
-            board2.hitBoard(row,column,board2.getBoard());
-            printer.gap();
-            printer.printBoard( board2 ) ;
+//            int row = getInput("Podaj rzad : ");
+//            int column = getInput("Podaj kolumne : ");
 
+            Random ran = new Random();
+            int row = ran.nextInt(10);
+            int column = ran.nextInt(10);
 
-
-        }
+            if (flag) {
+                player1.hitEnemyBoard(row, column, board2);
+                flag = false;
+            } else {
+                player2.hitEnemyBoard(row, column, board1);
+                flag = true;
+            }
+            try {
+                sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        } while (true);
     }
+
+    private int getInput(String s) {
+        printer.printMessage(s);
+        return inputOutput.getInput();
+    }
+
 
 }

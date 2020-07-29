@@ -12,6 +12,7 @@ public class Board {
     private final String[] shipsId = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
     CellInterface[][] fullBoard = new CellInterface[TOP_LIMIT][];
     Player owner;
+    Random ran;
 
 
     public Player getOwner() {
@@ -157,14 +158,14 @@ public class Board {
     }
 
     private Integer[] setShipHead() {
-        Random ran = new Random();
+        ran = new Random();
         int row = ran.nextInt(TOP_LIMIT);
         int column = ran.nextInt(TOP_LIMIT);
         return new Integer[]{row, column};
     }
 
     private boolean isHorizontalDirection() {
-        Random ran = new Random();
+        ran = new Random();
         int result = ran.nextInt(2);
         return result == ZERO;
     }

@@ -14,6 +14,7 @@ public class Printer {
 
     public void printBoard( Board board ) {
         this.printHead();
+        this.goToNewRow();
         for (CellInterface[] line : board.getBoard()) {
             this.printLineIndex();
             this.printRow(line);
@@ -42,6 +43,8 @@ public class Printer {
         }
         indexLine = 1;
         this.printMessage(  board1.getOwner().getName() );
+        System.out.print("                              ");
+        this.printMessage(  board2.getOwner().getName() );
         this.gap();
     }
 
@@ -94,8 +97,7 @@ public class Printer {
     }
 
     private void printHeads() {
-        printEmptySpace();
-        System.out.print(" A  B  C  D  E  F  G  H  I  J");
+        System.out.print("    A  B  C  D  E  F  G  H  I  J");
         printEmptySpace();
         printEmptySpace();
         printEmptySpace();
