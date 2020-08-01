@@ -20,6 +20,7 @@ public class SeaCell implements CellInterface {
         return seaCellTypeEnum;
     }
 
+
     @Override
     public void setEmptySpace() {
             this.seaCellTypeEnum = SeaCellTypeEnum.EMPTY_SPACE;

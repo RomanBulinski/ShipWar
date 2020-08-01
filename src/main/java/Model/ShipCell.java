@@ -11,13 +11,13 @@ public class ShipCell implements CellInterface {
 
     public ShipCell(int amountOfMasts) {
         shipCellTypeEnum = ShipCellTypeEnum.LIVE;
-        if(amountOfMasts==1){
+        if (amountOfMasts == 1) {
             shipTypeEnum = ShipTypeEnum.ONE_MAST;
-        } else if(amountOfMasts==2){
+        } else if (amountOfMasts == 2) {
             shipTypeEnum = ShipTypeEnum.TWO_MASTS;
-        }else if(amountOfMasts==3){
+        } else if (amountOfMasts == 3) {
             shipTypeEnum = ShipTypeEnum.TREE_MASTS;
-        }else if(amountOfMasts==4){
+        } else if (amountOfMasts == 4) {
             shipTypeEnum = ShipTypeEnum.FOUR_MAST;
         }
     }
@@ -36,11 +36,7 @@ public class ShipCell implements CellInterface {
     public void setEmptySpace() {
 
     }
-
-    @Override
-    public void setId(String shipCellId) {
-        this.shipCellId = shipCellId;
-    }
+    public String getId() { return shipCellId; }
 
     public ShipTypeEnum getShipTypeEnum() {
         return shipTypeEnum;
@@ -54,12 +50,14 @@ public class ShipCell implements CellInterface {
         return shipCellTypeEnum;
     }
 
-    public void setShipCellTypeEnum(ShipCellTypeEnum shipCellTypeEnum) { this.shipCellTypeEnum = shipCellTypeEnum; }
+    public void setShipCellTypeEnum(ShipCellTypeEnum shipCellTypeEnum) {
+        this.shipCellTypeEnum = shipCellTypeEnum;
+    }
 
-
-
-    public String getId() { return shipCellId; }
-
+    @Override
+    public void setId(String shipCellId) {
+        this.shipCellId = shipCellId;
+    }
 
 
 }

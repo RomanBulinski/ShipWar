@@ -1,6 +1,8 @@
 package Model;
 
 import Enums.SeaCellTypeEnum;
+import Enums.ShipCellTypeEnum;
+import Enums.ShipTypeEnum;
 
 import java.util.*;
 
@@ -11,10 +13,9 @@ public class Board {
     private final int ONE = 1;
     private final String[] shipsId = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
     CellInterface[][] fullBoard = new CellInterface[TOP_LIMIT][];
+    Map<String,Integer> shipsListInMap = new HashMap<>();
     Player owner;
     Random ran;
-
-    Map<String,Integer> shipsListInMap = new HashMap<>();
 
     public Player getOwner() {
         return owner;
@@ -107,6 +108,27 @@ public class Board {
 
     public void hitBoard(int row, int column, CellInterface[][] bordOnStart) {
         bordOnStart[row][column].hit();
+        if( bordOnStart[row][column] instanceof ShipCell ){
+            String shipId = ((ShipCell) bordOnStart[row][column]).getId();
+            ShipTypeEnum shipMastsType = ((ShipCell) bordOnStart[row][column]).getShipTypeEnum();
+            ShipCellTypeEnum aliveType= ((ShipCell) bordOnStart[row][column]).getShipCellTypeEnum();
+//            System.out.println(shipId+shipMastsType );
+            //TODO simplyf tic part of code
+            String shipMastsTypeString = "";
+            if( shipMastsType == ShipTypeEnum.FOUR_MAST){
+                shipMastsTypeString = "4";
+            }else if(shipMastsType == ShipTypeEnum.TREE_MASTS){
+                shipMastsTypeString = "3";
+            }else if(shipMastsType == ShipTypeEnum.TWO_MASTS){
+                shipMastsTypeString = "2";
+            }else if(shipMastsType == ShipTypeEnum.ONE_MAST){
+                shipMastsTypeString = "1";
+            }
+//            System.out.println( shipId+shipMastsTypeString );
+            int tempValue = shipsListInMap.get( shipId+shipMastsTypeString );
+            shipsListInMap.put(shipId+shipMastsTypeString, shipsListInMap.get( shipId+shipMastsTypeString ) - 1);
+        }
+
     }
 
     private void setGapsForHorizontalShip(CellInterface[][] bordOnStart, int row, int column, int i) {
