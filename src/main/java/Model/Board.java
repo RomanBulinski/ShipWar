@@ -2,7 +2,7 @@ package Model;
 
 import Enums.SeaCellTypeEnum;
 
-import java.util.Random;
+import java.util.*;
 
 public class Board {
 
@@ -14,6 +14,7 @@ public class Board {
     Player owner;
     Random ran;
 
+    Map<String,Integer> shipsListInMap = new HashMap<>();
 
     public Player getOwner() {
         return owner;
@@ -27,7 +28,7 @@ public class Board {
         for (int j = ZERO; j < TOP_LIMIT; j++) {
             CellInterface[] row = new CellInterface[TOP_LIMIT];
             for (int i = ZERO; i < TOP_LIMIT; i++) {
-                row[i] = new Sea();
+                row[i] = new SeaCell();
             }
             fullBoard[j] = row;
         }
@@ -38,19 +39,19 @@ public class Board {
     }
 
     public void setShipsOnBoard() {
-        int amountOfShips = 4;
+        int amountOfships = 4;
         int indexIdis = ZERO;
-        for (int masts = ONE; masts < 5; masts++) {
-            for (int j = amountOfShips; j > ZERO; j--) {
-                String shipId = shipsId[indexIdis];
-                createShipCell(fullBoard, masts, shipId);
+        for (int amuoutOfMasts = ONE; amuoutOfMasts < 5; amuoutOfMasts++) {
+            for (int j = amountOfships; j > ZERO; j--) {
+                String cellId = shipsId[indexIdis];
+                createShip(fullBoard, amuoutOfMasts, cellId);
+                indexIdis++;
             }
-            indexIdis++;
-            amountOfShips--;
+            amountOfships--;
         }
     }
 
-    private void createShipCell(CellInterface[][] bordOnStart, int amuoutOfMasts, String shipId) {
+    private void createShip(CellInterface[][] bordOnStart, int amuoutOfMasts, String cellId) {
 
         Integer[] head = setShipHead();
         CellInterface[][] board = bordOnStart;
@@ -63,9 +64,17 @@ public class Board {
                     int row = head[ZERO];
                     int column = head[ONE];
                     for (int i = ZERO; i < amuoutOfMasts; i++) {
-                        bordOnStart[row][column + i] = new Ship(amuoutOfMasts);
-                        bordOnStart[row][column + i].setId(shipId);
+                        bordOnStart[row][column + i] = new ShipCell(amuoutOfMasts);
+                        bordOnStart[row][column + i].setId(cellId);
                         setGapsForHorizontalShip(bordOnStart, row, column, i);
+
+                        if (shipsListInMap.get(cellId + amuoutOfMasts) == null) {
+                            shipsListInMap.put(cellId + amuoutOfMasts, 1);
+                        } else {
+                            Integer amountOfCell = shipsListInMap.get(cellId + amuoutOfMasts);
+                            shipsListInMap.put(cellId + amuoutOfMasts, amountOfCell + 1);
+                        }
+
                     }
                     flag = false;
                 } else {
@@ -76,9 +85,17 @@ public class Board {
                     int row = head[0];
                     int column = head[ONE];
                     for (int i = ZERO; i < amuoutOfMasts; i++) {
-                        bordOnStart[row + i][column] = new Ship(amuoutOfMasts);
-                        bordOnStart[row + i][column].setId(shipId);
+                        bordOnStart[row + i][column] = new ShipCell(amuoutOfMasts);
+                        bordOnStart[row + i][column].setId(cellId);
                         setGapsForVerticalShip(bordOnStart, row, column, i);
+
+                        if (shipsListInMap.get(cellId + amuoutOfMasts) == null) {
+                            shipsListInMap.put(cellId + amuoutOfMasts, 1);
+                        } else {
+                            Integer amountOfCell = shipsListInMap.get(cellId + amuoutOfMasts);
+                            shipsListInMap.put(cellId + amuoutOfMasts, amountOfCell + 1);
+                        }
+
                     }
                     flag = false;
                 } else {
@@ -175,7 +192,7 @@ public class Board {
             for (int i = 0; i < amountOfMasts; i++) {
                 if (head[ONE] + i < ZERO
                         || head[ONE] + i > 9
-                        || board[head[0]][head[ONE] + i] instanceof Ship
+                        || board[head[0]][head[ONE] + i] instanceof ShipCell
                         || board[head[0]][head[ONE] + i].getType() == SeaCellTypeEnum.EMPTY_SPACE) {
                     return false;
                 }
@@ -184,12 +201,16 @@ public class Board {
             for (int j = 0; j < amountOfMasts; j++) {
                 if (head[0] + j < 0
                         || head[0] + j > 9
-                        || board[head[0] + j][head[ONE]] instanceof Ship
+                        || board[head[0] + j][head[ONE]] instanceof ShipCell
                         || board[head[0] + j][head[ONE]].getType() == SeaCellTypeEnum.EMPTY_SPACE) {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    public Map<String, Integer> getShipsInList() {
+        return shipsListInMap;
     }
 }

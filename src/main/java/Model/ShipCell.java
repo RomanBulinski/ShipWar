@@ -3,13 +3,13 @@ package Model;
 import Enums.ShipCellTypeEnum;
 import Enums.ShipTypeEnum;
 
-public class Ship implements CellInterface {
+public class ShipCell implements CellInterface {
 
     ShipTypeEnum shipTypeEnum;
     ShipCellTypeEnum shipCellTypeEnum;
     String shipCellId;
 
-    public Ship(int amountOfMasts) {
+    public ShipCell(int amountOfMasts) {
         shipCellTypeEnum = ShipCellTypeEnum.LIVE;
         if(amountOfMasts==1){
             shipTypeEnum = ShipTypeEnum.ONE_MAST;
@@ -55,6 +55,8 @@ public class Ship implements CellInterface {
     }
 
     public void setShipCellTypeEnum(ShipCellTypeEnum shipCellTypeEnum) { this.shipCellTypeEnum = shipCellTypeEnum; }
+
+
 
     public String getId() { return shipCellId; }
 

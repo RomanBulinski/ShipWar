@@ -2,11 +2,11 @@ package Model;
 
 import Enums.SeaCellTypeEnum;
 
-public class Sea implements CellInterface {
+public class SeaCell implements CellInterface {
 
     SeaCellTypeEnum seaCellTypeEnum;
 
-    public Sea() {
+    public SeaCell() {
         seaCellTypeEnum = SeaCellTypeEnum.LIVE;
     }
 

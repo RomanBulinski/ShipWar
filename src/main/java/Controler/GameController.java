@@ -42,25 +42,22 @@ public class GameController {
             printer.gap();
             printer.printTwoBoards(board1, board2);
 
-//            int row = getInput("Podaj rzad : ");
-//            int column = getInput("Podaj kolumne : ");
-
-            Random ran = new Random();
-            int row = ran.nextInt(10);
-            int column = ran.nextInt(10);
+//            Random ran = new Random();
+//            int row = ran.nextInt(10);
+//            int column = ran.nextInt(10);
 
             if (flag) {
+                int row = getInput(player1.getName()+" podaj rzad : ");
+                int column = getInput(player1.getName()+"Podaj kolumne : ");
                 player1.hitEnemyBoard(row, column, board2);
                 flag = false;
             } else {
+                int row = getInput(player2.getName()+" podaj rzad : ");
+                int column = getInput(player2.getName()+"Podaj kolumne : ");
                 player2.hitEnemyBoard(row, column, board1);
                 flag = true;
             }
-            try {
-                sleep(500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+//            printer.sleepPrint(500);
         } while (true);
     }
 
