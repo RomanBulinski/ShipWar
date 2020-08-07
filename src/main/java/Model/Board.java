@@ -13,10 +13,14 @@ public class Board {
     private final int ONE = 1;
     private final String[] shipsId = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
 
-    CellInterface[][] fullBoard = new CellInterface[TOP_LIMIT][];
+    CellInterface[][] fullBoard;
     Map<String, Integer> shipsListInMap = new HashMap<>();
     Player owner;
     Random ran;
+
+    public Board(){
+        fullBoard = setBoard();
+    }
 
     public Player getOwner() {
         return owner;
@@ -26,7 +30,8 @@ public class Board {
         this.owner = owner;
     }
 
-    public void setBoard() {
+    public CellInterface[][] setBoard() {
+        CellInterface[][] fullBoard = new CellInterface[TOP_LIMIT][];
         for (int j = ZERO; j < TOP_LIMIT; j++) {
             CellInterface[] row = new CellInterface[TOP_LIMIT];
             for (int i = ZERO; i < TOP_LIMIT; i++) {
@@ -34,6 +39,7 @@ public class Board {
             }
             fullBoard[j] = row;
         }
+        return fullBoard;
     }
 
     public CellInterface[][] getBoard() {

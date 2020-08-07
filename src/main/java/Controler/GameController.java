@@ -9,8 +9,6 @@ import View.Printer;
 
 import java.util.Random;
 
-import static java.lang.Thread.sleep;
-
 public class GameController {
 
     Game game = new Game();
@@ -25,7 +23,6 @@ public class GameController {
 
         board1.setBoard();
         board1.setShipsOnBoard();
-
         board2.setBoard();
         board2.setShipsOnBoard();
 

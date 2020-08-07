@@ -18,7 +18,7 @@ public class InputOutput {
     }
 
     public int[] getCoordinates() {
-
+        //for example A1, D10
         String input = sc.next();
         Map<String, Integer> rowMap = Stream.of(new Object[][]{
                 {"A", 0},
