@@ -35,7 +35,7 @@ public class InputOutput {
 
         int[] coordinates = new int[2];
         coordinates[0] = rowMap.get( String.valueOf(input.charAt(0)) );
-        coordinates[1] = Integer.parseInt(input.split("")[1]) -1 ;
+        coordinates[1] = Integer.parseInt(input.substring(1)) -1 ;
 
         return coordinates;
     }

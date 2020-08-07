@@ -14,7 +14,7 @@ public class Board {
     private final String[] shipsId = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
 
     CellInterface[][] fullBoard = new CellInterface[TOP_LIMIT][];
-    Map<String,Integer> shipsListInMap = new HashMap<>();
+    Map<String, Integer> shipsListInMap = new HashMap<>();
     Player owner;
     Random ran;
 
@@ -97,27 +97,34 @@ public class Board {
         // hit board
         bord[row][column].hitcell();
         // save info in list
-        if( bord[row][column] instanceof ShipCell ){
+        if (bord[row][column] instanceof ShipCell) {
             String shipId = ((ShipCell) bord[row][column]).getId();
             ShipMastsTypeEnum shipMastsType = ((ShipCell) bord[row][column]).getShipTypeEnum();
 //            ShipCellTypeEnum aliveType= ((ShipCell) bordOnStart[row][column]).getShipCellTypeEnum();
             String shipMastsTypeString = mapEnumToString(shipMastsType);
-            String cellId = shipId+shipMastsTypeString;
-            shipsListInMap.put(cellId, shipsListInMap.get( shipId+shipMastsTypeString ) - 1);
+            String cellId = shipId + shipMastsTypeString;
+            shipsListInMap.put(cellId, shipsListInMap.get(shipId + shipMastsTypeString) - 1);
             //check if all cells are dead and set ShipCellTypeEnum.DEAD_SHIP for this cells
-            if( shipsListInMap.get(cellId) == 0 ){
-                System.out.println("uwaga !!! wszystkie maszty stracone ");
-                Arrays.stream(bord).forEach(  line -> Arrays.stream(line)
-                        .filter( cell -> cell instanceof ShipCell  )
-                        .filter( shipCell -> ((ShipCell) shipCell).getId().equals(shipId))
-                        .forEach( shipCell -> ((ShipCell) shipCell)
-                                .setShipCellTypeEnum(ShipCellTypeEnum.DEAD_SHIP) ));
+            if (shipsListInMap.get(cellId) == 0) {
+                Arrays.stream(bord).forEach(line -> Arrays.stream(line)
+                        .filter(cell -> cell instanceof ShipCell)
+                        .filter(shipCell -> ((ShipCell) shipCell).getId().equals(shipId))
+                        .forEach(shipCell -> ((ShipCell) shipCell)
+                                .setShipCellTypeEnum(ShipCellTypeEnum.DEAD_SHIP)));
             }
         }
     }
 
     public Map<String, Integer> getShipsInList() {
         return shipsListInMap;
+    }
+
+    public boolean isAllShipsDead() {
+        Object[] values = shipsListInMap.values().stream().filter(value -> value > 0).toArray();
+        if(values.length == 0){
+            return  true;
+        }
+        return  false;
     }
 
     private void setGapsForHorizontalShip(CellInterface[][] bordOnStart, int row, int column, int i) {
@@ -168,13 +175,13 @@ public class Board {
         if (row + i + ONE >= 0 && row + i + ONE < TOP_LIMIT) {
             bordOnStart[bottomCell][column].setEmptySpace();
         }
-        if (  ZERO <= upCell && upCell < TOP_LIMIT) {
+        if (ZERO <= upCell && upCell < TOP_LIMIT) {
             bordOnStart[upCell][column].setEmptySpace();
         }
         if (leftCell >= ZERO && leftCell < TOP_LIMIT && row - ONE >= ZERO && row - ONE < TOP_LIMIT) {
             bordOnStart[upCell][leftCell].setEmptySpace();
         }
-        if (rightCell < TOP_LIMIT && bottomCell>= 0 && bottomCell < TOP_LIMIT) {
+        if (rightCell < TOP_LIMIT && bottomCell >= 0 && bottomCell < TOP_LIMIT) {
             bordOnStart[bottomCell][rightCell].setEmptySpace();
         }
         if (rightCell < TOP_LIMIT && upCell >= 0 && upCell < TOP_LIMIT) {
@@ -232,16 +239,17 @@ public class Board {
 
     private String mapEnumToString(ShipMastsTypeEnum shipMastsType) {
         String shipMastsTypeString = "";
-        if( shipMastsType == ShipMastsTypeEnum.FOUR_MASTS){
+        if (shipMastsType == ShipMastsTypeEnum.FOUR_MASTS) {
             shipMastsTypeString = "4";
-        }else if(shipMastsType == ShipMastsTypeEnum.TREE_MASTS){
+        } else if (shipMastsType == ShipMastsTypeEnum.TREE_MASTS) {
             shipMastsTypeString = "3";
-        }else if(shipMastsType == ShipMastsTypeEnum.TWO_MASTS){
+        } else if (shipMastsType == ShipMastsTypeEnum.TWO_MASTS) {
             shipMastsTypeString = "2";
-        }else if(shipMastsType == ShipMastsTypeEnum.ONE_MAST){
+        } else if (shipMastsType == ShipMastsTypeEnum.ONE_MAST) {
             shipMastsTypeString = "1";
         }
         return shipMastsTypeString;
     }
+
 
 }

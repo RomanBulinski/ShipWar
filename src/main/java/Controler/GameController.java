@@ -37,27 +37,40 @@ public class GameController {
         player2 = new Player("Lech", PlayerTypeEnum.COMPUTER, board2);
 
         boolean flag = true;
+        boolean isGameAlive = true;
 
         printer.printMessage("START GAME");
         do {
             printer.gap();
             printer.printTwoBoards(board1, board2);
 
-//            Random ran = new Random();
-//            int row = ran.nextInt(10);
-//            int column = ran.nextInt(10);
-
             if (flag) {
-                int[] coordinates = getInputCoordinates(player1.getName() + " podaj wspolrzedne : ");
+                int[] coordinates = getComputerCoordinates();
+//                int[] coordinates = getInputCoordinates(player1.getName() + " podaj wspolrzedne : ");
                 player1.hitEnemyBoard(coordinates[0], coordinates[1], board2);
                 flag = false;
             } else {
-                int[] coordinates = getInputCoordinates(player2.getName() + " podaj wspolrzedne : ");
+                int[] coordinates = getComputerCoordinates();
+//                int[] coordinates = getInputCoordinates(player2.getName() + " podaj wspolrzedne : ");
                 player2.hitEnemyBoard(coordinates[0], coordinates[1], board1);
                 flag = true;
             }
+            isGameAlive = isGameAlive();
 //            printer.sleepPrint(500);
-        } while (true);
+        } while (isGameAlive);
+    }
+
+    private boolean isGameAlive( ) {
+        boolean isGameAliveTemp  = true;
+        if ( board1.isAllShipsDead()){
+            printer.printMessage("The winner is : "+board2.getOwner().getName() );
+            isGameAliveTemp = false;
+        }
+        if ( board2.isAllShipsDead()){
+            printer.printMessage("The winner is : "+board1.getOwner().getName() );
+            isGameAliveTemp = false;
+        }
+        return isGameAliveTemp;
     }
 
     private int[] getInputCoordinates(String s) {
@@ -65,4 +78,11 @@ public class GameController {
         return inputOutput.getCoordinates();
     }
 
+    private int[] getComputerCoordinates () {
+        Random ran = new Random();
+        int[] result = new int[2];
+        result[0] = ran.nextInt(10);
+        result[1] = ran.nextInt(10);
+        return result;
+    }
 }
