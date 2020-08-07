@@ -1,30 +1,30 @@
 package Model;
 
 import Enums.ShipCellTypeEnum;
-import Enums.ShipTypeEnum;
+import Enums.ShipMastsTypeEnum;
 
 public class ShipCell implements CellInterface {
 
-    ShipTypeEnum shipTypeEnum;
+    ShipMastsTypeEnum shipMastsTypeEnum;
     ShipCellTypeEnum shipCellTypeEnum;
     String shipCellId;
 
     public ShipCell(int amountOfMasts) {
-        shipCellTypeEnum = ShipCellTypeEnum.LIVE;
+        shipCellTypeEnum = ShipCellTypeEnum.LIVE_CELL;
         if (amountOfMasts == 1) {
-            shipTypeEnum = ShipTypeEnum.ONE_MAST;
+            shipMastsTypeEnum = shipMastsTypeEnum.ONE_MAST;
         } else if (amountOfMasts == 2) {
-            shipTypeEnum = ShipTypeEnum.TWO_MASTS;
+            shipMastsTypeEnum = shipMastsTypeEnum.TWO_MASTS;
         } else if (amountOfMasts == 3) {
-            shipTypeEnum = ShipTypeEnum.TREE_MASTS;
+            shipMastsTypeEnum = shipMastsTypeEnum.TREE_MASTS;
         } else if (amountOfMasts == 4) {
-            shipTypeEnum = ShipTypeEnum.FOUR_MAST;
+            shipMastsTypeEnum = shipMastsTypeEnum.FOUR_MASTS;
         }
     }
 
     @Override
-    public void hit() {
-        this.shipCellTypeEnum = ShipCellTypeEnum.DEAD;
+    public void hitcell() {
+        this.shipCellTypeEnum = ShipCellTypeEnum.DEAD_CELL;
     }
 
     @Override
@@ -38,12 +38,12 @@ public class ShipCell implements CellInterface {
     }
     public String getId() { return shipCellId; }
 
-    public ShipTypeEnum getShipTypeEnum() {
-        return shipTypeEnum;
+    public ShipMastsTypeEnum getShipTypeEnum() {
+        return shipMastsTypeEnum;
     }
 
-    public void setShipTypeEnum(ShipTypeEnum shipTypeEnum) {
-        this.shipTypeEnum = shipTypeEnum;
+    public void setShipTypeEnum(ShipMastsTypeEnum shipTypeEnum) {
+        this.shipMastsTypeEnum = shipTypeEnum;
     }
 
     public ShipCellTypeEnum getShipCellTypeEnum() {

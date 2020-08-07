@@ -1,4 +1,3 @@
-import Controler.BordController;
 import Controler.GameController;
 
 public class Main {

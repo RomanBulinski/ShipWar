@@ -2,7 +2,7 @@ package Model;
 
 import Enums.SeaCellTypeEnum;
 import Enums.ShipCellTypeEnum;
-import Enums.ShipTypeEnum;
+import Enums.ShipMastsTypeEnum;
 
 import java.util.*;
 
@@ -12,6 +12,7 @@ public class Board {
     private final int ZERO = 0;
     private final int ONE = 1;
     private final String[] shipsId = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j"};
+
     CellInterface[][] fullBoard = new CellInterface[TOP_LIMIT][];
     Map<String,Integer> shipsListInMap = new HashMap<>();
     Player owner;
@@ -68,14 +69,7 @@ public class Board {
                         bordOnStart[row][column + i] = new ShipCell(amuoutOfMasts);
                         bordOnStart[row][column + i].setId(cellId);
                         setGapsForHorizontalShip(bordOnStart, row, column, i);
-
-                        if (shipsListInMap.get(cellId + amuoutOfMasts) == null) {
-                            shipsListInMap.put(cellId + amuoutOfMasts, 1);
-                        } else {
-                            Integer amountOfCell = shipsListInMap.get(cellId + amuoutOfMasts);
-                            shipsListInMap.put(cellId + amuoutOfMasts, amountOfCell + 1);
-                        }
-
+                        infillListOfShips(amuoutOfMasts, cellId);
                     }
                     flag = false;
                 } else {
@@ -89,14 +83,7 @@ public class Board {
                         bordOnStart[row + i][column] = new ShipCell(amuoutOfMasts);
                         bordOnStart[row + i][column].setId(cellId);
                         setGapsForVerticalShip(bordOnStart, row, column, i);
-
-                        if (shipsListInMap.get(cellId + amuoutOfMasts) == null) {
-                            shipsListInMap.put(cellId + amuoutOfMasts, 1);
-                        } else {
-                            Integer amountOfCell = shipsListInMap.get(cellId + amuoutOfMasts);
-                            shipsListInMap.put(cellId + amuoutOfMasts, amountOfCell + 1);
-                        }
-
+                        infillListOfShips(amuoutOfMasts, cellId);
                     }
                     flag = false;
                 } else {
@@ -106,29 +93,31 @@ public class Board {
         }
     }
 
-    public void hitBoard(int row, int column, CellInterface[][] bordOnStart) {
-        bordOnStart[row][column].hit();
-        if( bordOnStart[row][column] instanceof ShipCell ){
-            String shipId = ((ShipCell) bordOnStart[row][column]).getId();
-            ShipTypeEnum shipMastsType = ((ShipCell) bordOnStart[row][column]).getShipTypeEnum();
-            ShipCellTypeEnum aliveType= ((ShipCell) bordOnStart[row][column]).getShipCellTypeEnum();
-//            System.out.println(shipId+shipMastsType );
-            //TODO simplyf tic part of code
-            String shipMastsTypeString = "";
-            if( shipMastsType == ShipTypeEnum.FOUR_MAST){
-                shipMastsTypeString = "4";
-            }else if(shipMastsType == ShipTypeEnum.TREE_MASTS){
-                shipMastsTypeString = "3";
-            }else if(shipMastsType == ShipTypeEnum.TWO_MASTS){
-                shipMastsTypeString = "2";
-            }else if(shipMastsType == ShipTypeEnum.ONE_MAST){
-                shipMastsTypeString = "1";
+    public void hitBoard(int row, int column, CellInterface[][] bord) {
+        // hit board
+        bord[row][column].hitcell();
+        // save info in list
+        if( bord[row][column] instanceof ShipCell ){
+            String shipId = ((ShipCell) bord[row][column]).getId();
+            ShipMastsTypeEnum shipMastsType = ((ShipCell) bord[row][column]).getShipTypeEnum();
+//            ShipCellTypeEnum aliveType= ((ShipCell) bordOnStart[row][column]).getShipCellTypeEnum();
+            String shipMastsTypeString = mapEnumToString(shipMastsType);
+            String cellId = shipId+shipMastsTypeString;
+            shipsListInMap.put(cellId, shipsListInMap.get( shipId+shipMastsTypeString ) - 1);
+            //check if all cells are dead and set ShipCellTypeEnum.DEAD_SHIP for this cells
+            if( shipsListInMap.get(cellId) == 0 ){
+                System.out.println("uwaga !!! wszystkie maszty stracone ");
+                Arrays.stream(bord).forEach(  line -> Arrays.stream(line)
+                        .filter( cell -> cell instanceof ShipCell  )
+                        .filter( shipCell -> ((ShipCell) shipCell).getId().equals(shipId))
+                        .forEach( shipCell -> ((ShipCell) shipCell)
+                                .setShipCellTypeEnum(ShipCellTypeEnum.DEAD_SHIP) ));
             }
-//            System.out.println( shipId+shipMastsTypeString );
-            int tempValue = shipsListInMap.get( shipId+shipMastsTypeString );
-            shipsListInMap.put(shipId+shipMastsTypeString, shipsListInMap.get( shipId+shipMastsTypeString ) - 1);
         }
+    }
 
+    public Map<String, Integer> getShipsInList() {
+        return shipsListInMap;
     }
 
     private void setGapsForHorizontalShip(CellInterface[][] bordOnStart, int row, int column, int i) {
@@ -232,7 +221,27 @@ public class Board {
         return true;
     }
 
-    public Map<String, Integer> getShipsInList() {
-        return shipsListInMap;
+    private void infillListOfShips(int amuoutOfMasts, String cellId) {
+        if (shipsListInMap.get(cellId + amuoutOfMasts) == null) {
+            shipsListInMap.put(cellId + amuoutOfMasts, 1);
+        } else {
+            Integer amountOfCell = shipsListInMap.get(cellId + amuoutOfMasts);
+            shipsListInMap.put(cellId + amuoutOfMasts, amountOfCell + 1);
+        }
     }
+
+    private String mapEnumToString(ShipMastsTypeEnum shipMastsType) {
+        String shipMastsTypeString = "";
+        if( shipMastsType == ShipMastsTypeEnum.FOUR_MASTS){
+            shipMastsTypeString = "4";
+        }else if(shipMastsType == ShipMastsTypeEnum.TREE_MASTS){
+            shipMastsTypeString = "3";
+        }else if(shipMastsType == ShipMastsTypeEnum.TWO_MASTS){
+            shipMastsTypeString = "2";
+        }else if(shipMastsType == ShipMastsTypeEnum.ONE_MAST){
+            shipMastsTypeString = "1";
+        }
+        return shipMastsTypeString;
+    }
+
 }

@@ -1,6 +1,7 @@
 package Enums;
 
 public enum ShipCellTypeEnum {
-    LIVE,
-    DEAD
+    LIVE_CELL,
+    DEAD_CELL,
+    DEAD_SHIP,
 }

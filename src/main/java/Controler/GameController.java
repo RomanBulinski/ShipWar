@@ -21,7 +21,7 @@ public class GameController {
     Printer printer = new Printer();
     InputOutput inputOutput = new InputOutput();
 
-    public GameController()  {
+    public GameController() {
 
         board1.setBoard();
         board1.setShipsOnBoard();
@@ -38,6 +38,7 @@ public class GameController {
 
         boolean flag = true;
 
+        printer.printMessage("START GAME");
         do {
             printer.gap();
             printer.printTwoBoards(board1, board2);
@@ -47,24 +48,21 @@ public class GameController {
 //            int column = ran.nextInt(10);
 
             if (flag) {
-                int row = getInput(player1.getName()+" podaj rzad : ");
-                int column = getInput(player1.getName()+"Podaj kolumne : ");
-                player1.hitEnemyBoard(row, column, board2);
+                int[] coordinates = getInputCoordinates(player1.getName() + " podaj wspolrzedne : ");
+                player1.hitEnemyBoard(coordinates[0], coordinates[1], board2);
                 flag = false;
             } else {
-                int row = getInput(player2.getName()+" podaj rzad : ");
-                int column = getInput(player2.getName()+"Podaj kolumne : ");
-                player2.hitEnemyBoard(row, column, board1);
+                int[] coordinates = getInputCoordinates(player2.getName() + " podaj wspolrzedne : ");
+                player2.hitEnemyBoard(coordinates[0], coordinates[1], board1);
                 flag = true;
             }
 //            printer.sleepPrint(500);
         } while (true);
     }
 
-    private int getInput(String s) {
+    private int[] getInputCoordinates(String s) {
         printer.printMessage(s);
-        return inputOutput.getInput();
+        return inputOutput.getCoordinates();
     }
-
 
 }

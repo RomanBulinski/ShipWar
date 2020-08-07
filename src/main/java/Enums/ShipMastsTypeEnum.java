@@ -1,8 +1,8 @@
 package Enums;
 
-public enum ShipTypeEnum {
+public enum ShipMastsTypeEnum {
 
-    FOUR_MAST,
+    FOUR_MASTS,
     TREE_MASTS,
     TWO_MASTS,
     ONE_MAST,

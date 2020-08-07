@@ -11,7 +11,7 @@ public class SeaCell implements CellInterface {
     }
 
     @Override
-    public void hit() {
+    public void hitcell() {
         this.seaCellTypeEnum = SeaCellTypeEnum.DEAD;
     }
 
