@@ -23,7 +23,7 @@ public class ShipCell implements CellInterface {
     }
 
     @Override
-    public void hitcell() {
+    public void hitCell() {
         this.shipCellTypeEnum = ShipCellTypeEnum.DEAD_CELL;
     }
 

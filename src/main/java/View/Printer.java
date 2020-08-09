@@ -81,11 +81,11 @@ public class Printer {
                     printShipCell((ShipCell) cell, "4  ");
                 }
             } else if (((SeaCell) cell).getSeaCellTypeEnum() == SeaCellTypeEnum.EMPTY_SPACE) {
+                printMessage("   ");
+            } else if (((SeaCell) cell).getSeaCellTypeEnum() == SeaCellTypeEnum.DEAD_CELL) {
                 printMessage(".  ");
-            } else if (((SeaCell) cell).getSeaCellTypeEnum() == SeaCellTypeEnum.DEAD) {
-                printMessage("x  ");
             } else {
-                printMessage(".  ");
+                printMessage("   ");
             }
         }
     }
@@ -155,5 +155,13 @@ public class Printer {
         gotoNextLine();
     }
 
+    public void printMenu( String[] menu ){
+        int index = 1;
+        for(String position:menu){
+            gotoNextLine();
+            printMessage(index + " "+ position);
+            index++;
+        }
+    }
 
 }

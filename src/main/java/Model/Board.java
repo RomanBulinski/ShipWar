@@ -101,7 +101,7 @@ public class Board {
 
     public void hitBoard(int row, int column, CellInterface[][] bord) {
         // hit board
-        bord[row][column].hitcell();
+        bord[row][column].hitCell();
         // save info in list
         if (bord[row][column] instanceof ShipCell) {
             String shipId = ((ShipCell) bord[row][column]).getId();
@@ -257,5 +257,11 @@ public class Board {
         return shipMastsTypeString;
     }
 
+    public boolean
+    isCellHitted(int[] coordinates){
+        return fullBoard[coordinates[0]][coordinates[1]].getType() == ShipCellTypeEnum.DEAD_CELL ||
+                fullBoard[coordinates[0]][coordinates[1]].getType() == ShipCellTypeEnum.DEAD_SHIP ||
+                fullBoard[coordinates[0]][coordinates[1]].getType() == SeaCellTypeEnum.DEAD_CELL;
+    }
 
 }

@@ -7,12 +7,12 @@ public class SeaCell implements CellInterface {
     SeaCellTypeEnum seaCellTypeEnum;
 
     public SeaCell() {
-        seaCellTypeEnum = SeaCellTypeEnum.LIVE;
+        seaCellTypeEnum = SeaCellTypeEnum.LIVE_CELL;
     }
 
     @Override
-    public void hitcell() {
-        this.seaCellTypeEnum = SeaCellTypeEnum.DEAD;
+    public void hitCell() {
+        this.seaCellTypeEnum = SeaCellTypeEnum.DEAD_CELL;
     }
 
     @Override

@@ -1,7 +1,7 @@
 package Enums;
 
 public enum SeaCellTypeEnum {
-    LIVE,
-    DEAD,
+    LIVE_CELL,
+    DEAD_CELL,
     EMPTY_SPACE
 }
