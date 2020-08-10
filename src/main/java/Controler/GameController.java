@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class GameController {
 
-    Game game = new Game();
+    Game game;
     Board board1;
     Board board2;
     Player player1;
@@ -24,40 +24,46 @@ public class GameController {
 
         while (true) {
 
-            board1 = new Board();
-            board2 = new Board();
-
-            printer.printMessage("START GAME");
-            printer.gotoNextLine();
-
-            board1.setBoard();
-            board2.setBoard();
-            board1.setShipsOnBoard();
-            board2.setShipsOnBoard();
-
-            game.setPlayers();
-            game.addPlayer(player1);
-            game.addPlayer(player2);
-
-            printer.printMenu(new String[]{"Human vs. Human", "Human vs. computer", "computer vs. computer"});
-            printer.gotoNextLine();
-            printer.printMessage("Choose type game : ");
-            int chosenGameType = inputOutput.getIntInput();
-            if (chosenGameType == 1) {
-                setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.HUMAN);
-            } else if (chosenGameType == 2) {
-                setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.COMPUTER);
-            } else {
-                setPlayers(PlayerTypeEnum.COMPUTER, PlayerTypeEnum.COMPUTER);
-            }
-
+            prepareGame();
+            choosePlayersType();
             runRound();
 
-            printer.sleepPrint(500);
             printer.printMessage("New Game ? ");
             printer.gotoNextLine();
         }
 
+    }
+
+    private void choosePlayersType() {
+        printer.printMenu(new String[]{"Human vs. Human", "Human vs. computer", "computer vs. computer"});
+        printer.gotoNextLine();
+        printer.printMessage("Choose type game : ");
+        int chosenGameType = inputOutput.getIntInput();
+        if (chosenGameType == 1) {
+            setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.HUMAN);
+        } else if (chosenGameType == 2) {
+            setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.COMPUTER);
+        } else {
+            setPlayers(PlayerTypeEnum.COMPUTER, PlayerTypeEnum.COMPUTER);
+        }
+    }
+
+    private void prepareGame() {
+        game = new Game();
+        board1 = new Board();
+        board2 = new Board();
+
+        board1.setBoard();
+        board2.setBoard();
+        board1.setShipsOnBoard();
+        board2.setShipsOnBoard();
+
+        game.setPlayers();
+        game.addPlayer(player1);
+        game.addPlayer(player2);
+
+        printer.printMessage("START GAME");
+        printer.gotoNextLine();
     }
 
     private void runRound() {
@@ -116,13 +122,14 @@ public class GameController {
 
     private boolean isRoundAlive() {
         boolean isRoundAliveTemp = true;
+        isRoundAliveTemp = isRoundAliveTemp(isRoundAliveTemp, board1, board2);
+        isRoundAliveTemp = isRoundAliveTemp(isRoundAliveTemp, board2, board1);
+        return isRoundAliveTemp;
+    }
+
+    private boolean isRoundAliveTemp(boolean isRoundAliveTemp, Board board1, Board board2) {
         if (board1.isAllShipsDead()) {
             printer.printMessage("The winner is : " + board2.getOwner().getName());
-            printer.gotoNextLine();
-            isRoundAliveTemp = false;
-        }
-        if (board2.isAllShipsDead()) {
-            printer.printMessage("The winner is : " + board1.getOwner().getName());
             printer.gotoNextLine();
             isRoundAliveTemp = false;
         }

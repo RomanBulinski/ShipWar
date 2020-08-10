@@ -77,7 +77,6 @@ public class Board {
                         setGapsForHorizontalShip(bordOnStart, row, column, i);
                         infillListOfShips(amuoutOfMasts, cellId);
                     }
-                    System.out.println("postawilem statek " + amuoutOfMasts + " masztowy");
                     flag = false;
                 } else {
                     head = setShipHead();
@@ -92,7 +91,6 @@ public class Board {
                         setGapsForVerticalShip(bordOnStart, row, column, i);
                         infillListOfShips(amuoutOfMasts, cellId);
                     }
-                    System.out.println("postawilem statek " + amuoutOfMasts + " masztowy");
                     flag = false;
                 } else {
                     head = setShipHead();
