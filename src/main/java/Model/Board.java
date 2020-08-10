@@ -16,9 +16,9 @@ public class Board {
     CellInterface[][] fullBoard;
     Map<String, Integer> shipsListInMap = new HashMap<>();
     Player owner;
-    Random ran;
+    Random ran = new Random();
 
-    public Board(){
+    public Board() {
         fullBoard = setBoard();
     }
 
@@ -47,15 +47,15 @@ public class Board {
     }
 
     public void setShipsOnBoard() {
-        int amountOfships = 4;
+        int amountOfships = 1;
         int indexIdis = ZERO;
-        for (int amuoutOfMasts = ONE; amuoutOfMasts < 5; amuoutOfMasts++) {
-            for (int j = amountOfships; j > ZERO; j--) {
+        for (int amuoutOfMasts = 4; amuoutOfMasts > ZERO; amuoutOfMasts--) {
+            for (int j = 1; j <= amountOfships; j++) {
                 String cellId = shipsId[indexIdis];
                 createShip(fullBoard, amuoutOfMasts, cellId);
                 indexIdis++;
             }
-            amountOfships--;
+            amountOfships++;
         }
     }
 
@@ -77,6 +77,7 @@ public class Board {
                         setGapsForHorizontalShip(bordOnStart, row, column, i);
                         infillListOfShips(amuoutOfMasts, cellId);
                     }
+                    System.out.println("postawilem statek " + amuoutOfMasts + " masztowy");
                     flag = false;
                 } else {
                     head = setShipHead();
@@ -91,6 +92,7 @@ public class Board {
                         setGapsForVerticalShip(bordOnStart, row, column, i);
                         infillListOfShips(amuoutOfMasts, cellId);
                     }
+                    System.out.println("postawilem statek " + amuoutOfMasts + " masztowy");
                     flag = false;
                 } else {
                     head = setShipHead();
@@ -127,10 +129,7 @@ public class Board {
 
     public boolean isAllShipsDead() {
         Object[] values = shipsListInMap.values().stream().filter(value -> value > 0).toArray();
-        if(values.length == 0){
-            return  true;
-        }
-        return  false;
+        return values.length == 0;
     }
 
     private void setGapsForHorizontalShip(CellInterface[][] bordOnStart, int row, int column, int i) {
@@ -199,7 +198,6 @@ public class Board {
     }
 
     private Integer[] setShipHead() {
-        ran = new Random();
         int row = ran.nextInt(TOP_LIMIT);
         int column = ran.nextInt(TOP_LIMIT);
         return new Integer[]{row, column};
@@ -258,7 +256,7 @@ public class Board {
     }
 
     public boolean
-    isCellHitted(int[] coordinates){
+    isCellHitted(int[] coordinates) {
         return fullBoard[coordinates[0]][coordinates[1]].getType() == ShipCellTypeEnum.DEAD_CELL ||
                 fullBoard[coordinates[0]][coordinates[1]].getType() == ShipCellTypeEnum.DEAD_SHIP ||
                 fullBoard[coordinates[0]][coordinates[1]].getType() == SeaCellTypeEnum.DEAD_CELL;

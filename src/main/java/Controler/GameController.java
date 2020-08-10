@@ -12,8 +12,8 @@ import java.util.Random;
 public class GameController {
 
     Game game = new Game();
-    Board board1 = new Board();
-    Board board2 = new Board();
+    Board board1;
+    Board board2;
     Player player1;
     Player player2;
     Printer printer = new Printer();
@@ -22,35 +22,47 @@ public class GameController {
 
     public GameController() {
 
-        boolean isPlayer1CanHit = true;
-        boolean isGameAlive ;
+        while (true) {
 
-        board1.setBoard();
-        board1.setShipsOnBoard();
-        board2.setBoard();
-        board2.setShipsOnBoard();
+            board1 = new Board();
+            board2 = new Board();
 
-        game.setPlayers();
-        game.addPlayer(player1);
-        game.addPlayer(player2);
+            printer.printMessage("START GAME");
+            printer.gotoNextLine();
 
-        printer.printMessage("START GAME");
-        printer.gotoNextLine();
+            board1.setBoard();
+            board2.setBoard();
+            board1.setShipsOnBoard();
+            board2.setShipsOnBoard();
 
-        printer.printMenu(new String[]{"Human vs. Human", "Human vs. computer", "computer vs. computer"});
-        printer.gotoNextLine();
-        printer.printMessage("Choose type game : ");
-//        printer.gotoNextLine();
-        int chosenGameType = inputOutput.getIntInput();
+            game.setPlayers();
+            game.addPlayer(player1);
+            game.addPlayer(player2);
 
-        if(chosenGameType==1){
-            setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.HUMAN);
-        }else if(chosenGameType==2){
-            setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.COMPUTER);
-        }else{
-            setPlayers(PlayerTypeEnum.COMPUTER, PlayerTypeEnum.COMPUTER);
+            printer.printMenu(new String[]{"Human vs. Human", "Human vs. computer", "computer vs. computer"});
+            printer.gotoNextLine();
+            printer.printMessage("Choose type game : ");
+            int chosenGameType = inputOutput.getIntInput();
+            if (chosenGameType == 1) {
+                setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.HUMAN);
+            } else if (chosenGameType == 2) {
+                setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.COMPUTER);
+            } else {
+                setPlayers(PlayerTypeEnum.COMPUTER, PlayerTypeEnum.COMPUTER);
+            }
+
+            runRound();
+
+            printer.sleepPrint(500);
+            printer.printMessage("New Game ? ");
+            printer.gotoNextLine();
         }
 
+    }
+
+    private void runRound() {
+        boolean isPlayer1CanHit = true;
+        boolean isRoundAlive;
         do {
             printer.gap();
             printer.printTwoBoards(board1, board2);
@@ -59,23 +71,23 @@ public class GameController {
                 boolean isHitPossible = true;
                 while (isHitPossible) {
                     int[] coordinates;
-                    if(player1.getPlayerTypeEnum() == PlayerTypeEnum.HUMAN){
+                    if (player1.getPlayerTypeEnum() == PlayerTypeEnum.HUMAN) {
                         coordinates = getInputCoordinatesFromHuman(player1.getName() + " podaj wspolrzedne : ");
-                    }else{
+                    } else {
                         coordinates = getCoordinatesFromComputer();
                     }
                     isCellHited = board2.isCellHitted(coordinates);
-                    if(!isCellHited){
+                    if (!isCellHited) {
                         player1.hitEnemyBoard(coordinates[0], coordinates[1], board2);
                         isPlayer1CanHit = false;
                         isHitPossible = false;
-                    }else{
+                    } else {
                         isHitPossible = true;
                     }
                 }
             } else {
-                boolean hitFlag2 = true;
-                while (hitFlag2) {
+                boolean isHitPossible2 = true;
+                while (isHitPossible2) {
                     int[] coordinates;
                     if (player2.getPlayerTypeEnum() == PlayerTypeEnum.HUMAN) {
                         coordinates = getInputCoordinatesFromHuman(player2.getName() + " podaj wspolrzedne : ");
@@ -86,39 +98,35 @@ public class GameController {
                     if (!isCellHited) {
                         player2.hitEnemyBoard(coordinates[0], coordinates[1], board1);
                         isPlayer1CanHit = true;
-                        hitFlag2 = false;
+                        isHitPossible2 = false;
                     } else {
-                        hitFlag2 = true;
+                        isHitPossible2 = true;
                     }
                 }
             }
-            isGameAlive = isGameAlive();
+            isRoundAlive = isRoundAlive();
 //            printer.sleepPrint(500);
-        } while (isGameAlive);
+        } while (isRoundAlive);
     }
-
-//    private boolean checkIfIsHited(int[] coordinates){
-//        if()
-//
-//        return true;
-//    }
 
     private void setPlayers(PlayerTypeEnum playerType1, PlayerTypeEnum playerType2) {
         player1 = new Player("Jarosław", playerType1, board1);
         player2 = new Player("Lech", playerType2, board2);
     }
 
-    private boolean isGameAlive( ) {
-        boolean isGameAliveTemp  = true;
-        if ( board1.isAllShipsDead()){
-            printer.printMessage("The winner is : "+board2.getOwner().getName() );
-            isGameAliveTemp = false;
+    private boolean isRoundAlive() {
+        boolean isRoundAliveTemp = true;
+        if (board1.isAllShipsDead()) {
+            printer.printMessage("The winner is : " + board2.getOwner().getName());
+            printer.gotoNextLine();
+            isRoundAliveTemp = false;
         }
-        if ( board2.isAllShipsDead()){
-            printer.printMessage("The winner is : "+board1.getOwner().getName() );
-            isGameAliveTemp = false;
+        if (board2.isAllShipsDead()) {
+            printer.printMessage("The winner is : " + board1.getOwner().getName());
+            printer.gotoNextLine();
+            isRoundAliveTemp = false;
         }
-        return isGameAliveTemp;
+        return isRoundAliveTemp;
     }
 
     private int[] getInputCoordinatesFromHuman(String s) {
@@ -126,7 +134,7 @@ public class GameController {
         return inputOutput.getCoordinates();
     }
 
-    private int[] getCoordinatesFromComputer () {
+    private int[] getCoordinatesFromComputer() {
         Random ran = new Random();
         int[] result = new int[2];
         result[0] = ran.nextInt(10);
