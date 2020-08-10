@@ -11,27 +11,41 @@ import java.util.Random;
 
 public class GameController {
 
+    Printer printer = new Printer();
+    InputOutput inputOutput = new InputOutput();
+
     Game game;
     Board board1;
     Board board2;
     Player player1;
     Player player2;
-    Printer printer = new Printer();
-    InputOutput inputOutput = new InputOutput();
+
     boolean isCellHited;
+    boolean isNewGame;
 
     public GameController() {
 
-        while (true) {
+        isNewGame = true;
 
+        while (isNewGame) {
             prepareGame();
             choosePlayersType();
-            runRound();
-
-            printer.printMessage("New Game ? ");
-            printer.gotoNextLine();
+            runGame();
+            startNewGameOrFinish();
         }
 
+    }
+
+    private void startNewGameOrFinish() {
+        printer.printMessage("New Game ? y/n : ");
+        switch (inputOutput.getStringInput()) {
+            case "y":
+                isNewGame = true;
+                break;
+            case "n":
+                isNewGame = false;
+                break;
+        }
     }
 
     private void choosePlayersType() {
@@ -66,7 +80,7 @@ public class GameController {
         printer.gotoNextLine();
     }
 
-    private void runRound() {
+    private void runGame() {
         boolean isPlayer1CanHit = true;
         boolean isRoundAlive;
         do {
