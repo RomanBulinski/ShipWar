@@ -20,13 +20,11 @@ public class GameController {
     Player player1;
     Player player2;
 
-    boolean isCellHited;
     boolean isNewGame;
 
     public GameController() {
 
         isNewGame = true;
-
         while (isNewGame) {
             prepareGame();
             choosePlayersType();
@@ -38,19 +36,26 @@ public class GameController {
 
     private void startNewGameOrFinish() {
         printer.printMessage("New Game ? y/n : ");
-        switch (inputOutput.getStringInput()) {
-            case "y":
-                isNewGame = true;
-                break;
-            case "n":
-                isNewGame = false;
-                break;
+        if (inputOutput.getStringInput().equals("y")) {
+            isNewGame = true;
+        } else if (inputOutput.getStringInput().equals("n")) {
+//        } else {
+            isNewGame = false;
         }
+
+//        switch (inputOutput.getStringInput()) {
+//            case "y":
+//                isNewGame = true;
+//                break;
+//            case "n":
+//                isNewGame = false;
+//                break;
+//        }
     }
 
     private void choosePlayersType() {
         printer.printMenu(new String[]{"Human vs. Human", "Human vs. computer", "computer vs. computer"});
-        printer.gotoNextLine();
+        printer.gap();
         printer.printMessage("Choose type game : ");
         int chosenGameType = inputOutput.getIntInput();
         if (chosenGameType == 1) {
@@ -76,11 +81,13 @@ public class GameController {
         game.addPlayer(player1);
         game.addPlayer(player2);
 
-        printer.printMessage("START GAME");
+        printer.gotoNextLine();
+        printer.printMessage(" ---- START GAME ----");
         printer.gotoNextLine();
     }
 
     private void runGame() {
+        boolean isCellHited;
         boolean isPlayer1CanHit = true;
         boolean isRoundAlive;
         do {
@@ -125,7 +132,6 @@ public class GameController {
                 }
             }
             isRoundAlive = isRoundAlive();
-//            printer.sleepPrint(500);
         } while (isRoundAlive);
     }
 
@@ -136,15 +142,15 @@ public class GameController {
 
     private boolean isRoundAlive() {
         boolean isRoundAliveTemp = true;
-        isRoundAliveTemp = isRoundAliveTemp(isRoundAliveTemp, board1, board2);
-        isRoundAliveTemp = isRoundAliveTemp(isRoundAliveTemp, board2, board1);
+        isRoundAliveTemp = isBoardRoundAlive(isRoundAliveTemp, board1, board2);
+        isRoundAliveTemp = isBoardRoundAlive(isRoundAliveTemp, board2, board1);
         return isRoundAliveTemp;
     }
 
-    private boolean isRoundAliveTemp(boolean isRoundAliveTemp, Board board1, Board board2) {
-        if (board1.isAllShipsDead()) {
-            printer.printMessage("The winner is : " + board2.getOwner().getName());
-            printer.gotoNextLine();
+    private boolean isBoardRoundAlive(boolean isRoundAliveTemp, Board boardA, Board boardB) {
+        if (boardA.isAllShipsDead()) {
+            printer.printMessage("The winner is : " + boardB.getOwner().getName());
+            printer.gap();
             isRoundAliveTemp = false;
         }
         return isRoundAliveTemp;
