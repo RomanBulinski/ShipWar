@@ -6,7 +6,6 @@ import Model.Player;
 import View.InputOutput;
 import View.Printer;
 
-import java.util.Random;
 
 public class GameController {
 
@@ -27,51 +26,25 @@ public class GameController {
         isNewGame = true;
         while (isNewGame) {
             prepareGame();
-//            choosePlayersType();
             runGame();
             startNewGameOrFinish();
         }
-
     }
-
-    private void startNewGameOrFinish() {
-        printer.printMessage("New Game ? y/n : ");
-        if (inputOutput.getStringInput().equals("y")) {
-            isNewGame = true;
-        } else if (inputOutput.getStringInput().equals("n")) {
-//        } else {
-            isNewGame = false;
-        }
-
-//        switch (inputOutput.getStringInput()) {
-//            case "y":
-//                isNewGame = true;
-//                break;
-//            case "n":
-//                isNewGame = false;
-//                break;
-//        }
-    }
-
-
 
     private void prepareGame() {
 
+       //TODO make BoardsController
         board1 = new Board();
         board2 = new Board();
-        playersController = new PlayersController();
-
         board1.setBoard();
         board2.setBoard();
         board1.setShipsOnBoard();
         board2.setShipsOnBoard();
 
-        playersController.createPlayers()
+        playersController = new PlayersController( board1, board2 , printer, inputOutput);
+
         player1 = playersController.getPlayer1();
         player2 = playersController.getPlayer2();
-
-//        playersController.addPlayer(player1);
-//        playersController.addPlayer(player2);
 
         printer.gotoNextLine();
         printer.printMessage(" ---- START GAME ----");
@@ -126,10 +99,24 @@ public class GameController {
         } while (isRoundAlive);
     }
 
-//    private void createPlayers(PlayerTypeEnum playerType1, PlayerTypeEnum playerType2) {
-//        player1 = new Player("Jarosław", playerType1, board1);
-//        player2 = new Player("Lech", playerType2, board2);
-//    }
+    private void startNewGameOrFinish() {
+        printer.printMessage("New Game ? y/n : ");
+        if (inputOutput.getStringInput().equals("y")) {
+            isNewGame = true;
+        } else if (inputOutput.getStringInput().equals("n")) {
+//        } else {
+            isNewGame = false;
+        }
+
+//        switch (inputOutput.getStringInput()) {
+//            case "y":
+//                isNewGame = true;
+//                break;
+//            case "n":
+//                isNewGame = false;
+//                break;
+//        }
+    }
 
     private boolean isRoundAlive() {
         boolean isRoundAliveTemp = true;
@@ -153,10 +140,7 @@ public class GameController {
     }
 
     private int[] getCoordinatesFromComputer() {
-        Random ran = new Random();
-        int[] result = new int[2];
-        result[0] = ran.nextInt(10);
-        result[1] = ran.nextInt(10);
-        return result;
+        return inputOutput.getCoordinatesFromComputer();
     }
+
 }

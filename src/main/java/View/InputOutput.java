@@ -40,4 +40,14 @@ public class InputOutput {
         return coordinates;
     }
 
+    public int[] getCoordinatesFromComputer() {
+        Random ran = new Random();
+        int[] result = new int[2];
+        result[0] = ran.nextInt(10);
+        result[1] = ran.nextInt(10);
+        return result;
+    }
+
+
+
 }
