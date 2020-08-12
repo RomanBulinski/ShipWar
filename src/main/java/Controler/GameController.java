@@ -2,7 +2,6 @@ package Controler;
 
 import Enums.PlayerTypeEnum;
 import Model.Board;
-import Model.Game;
 import Model.Player;
 import View.InputOutput;
 import View.Printer;
@@ -14,12 +13,13 @@ public class GameController {
     Printer printer = new Printer();
     InputOutput inputOutput = new InputOutput();
 
-    Game game;
+    PlayersController playersController;
     Board board1;
     Board board2;
     Player player1;
     Player player2;
 
+    boolean isCellHited;
     boolean isNewGame;
 
     public GameController() {
@@ -27,7 +27,7 @@ public class GameController {
         isNewGame = true;
         while (isNewGame) {
             prepareGame();
-            choosePlayersType();
+//            choosePlayersType();
             runGame();
             startNewGameOrFinish();
         }
@@ -53,33 +53,25 @@ public class GameController {
 //        }
     }
 
-    private void choosePlayersType() {
-        printer.printMenu(new String[]{"Human vs. Human", "Human vs. computer", "computer vs. computer"});
-        printer.gap();
-        printer.printMessage("Choose type game : ");
-        int chosenGameType = inputOutput.getIntInput();
-        if (chosenGameType == 1) {
-            setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.HUMAN);
-        } else if (chosenGameType == 2) {
-            setPlayers(PlayerTypeEnum.HUMAN, PlayerTypeEnum.COMPUTER);
-        } else {
-            setPlayers(PlayerTypeEnum.COMPUTER, PlayerTypeEnum.COMPUTER);
-        }
-    }
+
 
     private void prepareGame() {
-        game = new Game();
+
         board1 = new Board();
         board2 = new Board();
+        playersController = new PlayersController();
 
         board1.setBoard();
         board2.setBoard();
         board1.setShipsOnBoard();
         board2.setShipsOnBoard();
 
-        game.setPlayers();
-        game.addPlayer(player1);
-        game.addPlayer(player2);
+        playersController.createPlayers()
+        player1 = playersController.getPlayer1();
+        player2 = playersController.getPlayer2();
+
+//        playersController.addPlayer(player1);
+//        playersController.addPlayer(player2);
 
         printer.gotoNextLine();
         printer.printMessage(" ---- START GAME ----");
@@ -87,7 +79,6 @@ public class GameController {
     }
 
     private void runGame() {
-        boolean isCellHited;
         boolean isPlayer1CanHit = true;
         boolean isRoundAlive;
         do {
@@ -135,10 +126,10 @@ public class GameController {
         } while (isRoundAlive);
     }
 
-    private void setPlayers(PlayerTypeEnum playerType1, PlayerTypeEnum playerType2) {
-        player1 = new Player("Jarosław", playerType1, board1);
-        player2 = new Player("Lech", playerType2, board2);
-    }
+//    private void createPlayers(PlayerTypeEnum playerType1, PlayerTypeEnum playerType2) {
+//        player1 = new Player("Jarosław", playerType1, board1);
+//        player2 = new Player("Lech", playerType2, board2);
+//    }
 
     private boolean isRoundAlive() {
         boolean isRoundAliveTemp = true;

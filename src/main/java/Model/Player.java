@@ -12,7 +12,6 @@ public class Player {
         this.name = name;
         this.playerTypeEnum = playerTypeEnum;
         this.board = board;
-
         this.board.setOwner(this);
     }
 
