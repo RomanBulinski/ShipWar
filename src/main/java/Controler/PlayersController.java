@@ -40,14 +40,11 @@ public class PlayersController {
     }
 
     private void createPlayers(PlayerTypeEnum playerType1, PlayerTypeEnum playerType2, Board board1, Board board2) {
-        player1 = new Player("Jarosław", playerType1, board1);
+        player1 = new Player("Jaroslaw", playerType1, board1);
         player2 = new Player("Lech", playerType2, board2);
     }
 
-    public Player getPlayer1() {
-        return player1;
-    }
-
+    public Player getPlayer1() { return player1; }
     public Player getPlayer2() {
         return player2;
     }

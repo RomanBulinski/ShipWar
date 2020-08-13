@@ -230,25 +230,31 @@ public class Board {
         return true;
     }
 
-    private void infillListOfShips(int amuoutOfMasts, String cellId) {
-        if (shipsListInMap.get(cellId + amuoutOfMasts) == null) {
-            shipsListInMap.put(cellId + amuoutOfMasts, 1);
+    private void infillListOfShips(int amountOfMasts, String cellId) {
+        if (shipsListInMap.get(cellId + amountOfMasts) == null) {
+            shipsListInMap.put(cellId + amountOfMasts, 1);
         } else {
-            Integer amountOfCell = shipsListInMap.get(cellId + amuoutOfMasts);
-            shipsListInMap.put(cellId + amuoutOfMasts, amountOfCell + 1);
+            Integer amountOfCell = shipsListInMap.get(cellId + amountOfMasts);
+            shipsListInMap.put(cellId + amountOfMasts, amountOfCell + 1);
         }
     }
 
     private String mapEnumToString(ShipMastsTypeEnum shipMastsType) {
         String shipMastsTypeString = "";
-        if (shipMastsType == ShipMastsTypeEnum.FOUR_MASTS) {
-            shipMastsTypeString = "4";
-        } else if (shipMastsType == ShipMastsTypeEnum.TREE_MASTS) {
-            shipMastsTypeString = "3";
-        } else if (shipMastsType == ShipMastsTypeEnum.TWO_MASTS) {
-            shipMastsTypeString = "2";
-        } else if (shipMastsType == ShipMastsTypeEnum.ONE_MAST) {
-            shipMastsTypeString = "1";
+
+        switch(shipMastsType){
+            case FOUR_MASTS:
+                shipMastsTypeString = "4";
+                break;
+            case TREE_MASTS:
+                shipMastsTypeString = "3";
+                break;
+            case TWO_MASTS:
+                shipMastsTypeString = "2";
+                break;
+            case ONE_MAST:
+                shipMastsTypeString = "1";
+                break;
         }
         return shipMastsTypeString;
     }

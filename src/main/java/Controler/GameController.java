@@ -6,11 +6,12 @@ import Model.Player;
 import View.InputOutput;
 import View.Printer;
 
+import static Enums.PlayerTypeEnum.HUMAN;
 
 public class GameController {
 
-    Printer printer = new Printer();
-    InputOutput inputOutput = new InputOutput();
+    Printer printer;
+    InputOutput inputOutput;
 
     BoardsController boardsController;
     Board board1;
@@ -19,11 +20,10 @@ public class GameController {
     Player player1;
     Player player2;
 
-    //TODO remove this
-    boolean isCellHited;
     boolean isNewGame;
 
     public GameController() {
+        init();
 
         isNewGame = true;
         while (isNewGame) {
@@ -33,7 +33,16 @@ public class GameController {
         }
     }
 
+    private void init(){
+        printer = new Printer();
+        inputOutput = new InputOutput();
+    }
+
     private void prepareGame() {
+
+        printer.gotoNextLine();
+        printer.printMessage(" ---- START GAME ----");
+        printer.gotoNextLine();
 
         boardsController = new BoardsController();
         board1 = boardsController.getBoard1();
@@ -43,12 +52,10 @@ public class GameController {
         player1 = playersController.getPlayer1();
         player2 = playersController.getPlayer2();
 
-        printer.gotoNextLine();
-        printer.printMessage(" ---- START GAME ----");
-        printer.gotoNextLine();
     }
 
     private void runGame() {
+        boolean isCellHited;
         boolean isPlayer1CanHit = true;
         boolean isRoundAlive;
         do {
@@ -59,10 +66,10 @@ public class GameController {
                 boolean isHitPossible = true;
                 while (isHitPossible) {
                     int[] coordinates;
-                    if (player1.getPlayerTypeEnum() == PlayerTypeEnum.HUMAN) {
-                        coordinates = getInputCoordinatesFromHuman(player1.getName() + " podaj wspolrzedne : ");
+                    if (player1.getPlayerTypeEnum() == HUMAN) {
+                        coordinates = inputOutput.getInputCoordinatesFromHuman(player1.getName() + " podaj wspolrzedne : ");
                     } else {
-                        coordinates = getCoordinatesFromComputer();
+                        coordinates = inputOutput.getCoordinatesFromComputer();
                     }
                     isCellHited = board2.isCellHitted(coordinates);
                     if (!isCellHited) {
@@ -77,11 +84,13 @@ public class GameController {
                 boolean isHitPossible2 = true;
                 while (isHitPossible2) {
                     int[] coordinates;
+
                     if (player2.getPlayerTypeEnum() == PlayerTypeEnum.HUMAN) {
-                        coordinates = getInputCoordinatesFromHuman(player2.getName() + " podaj wspolrzedne : ");
+                        coordinates = inputOutput.getInputCoordinatesFromHuman(player2.getName() + " podaj wspolrzedne : ");
                     } else {
-                        coordinates = getCoordinatesFromComputer();
+                        coordinates = inputOutput.getCoordinatesFromComputer();
                     }
+
                     isCellHited = board1.isCellHitted(coordinates);
                     if (!isCellHited) {
                         player2.hitEnemyBoard(coordinates[0], coordinates[1], board1);
@@ -101,18 +110,8 @@ public class GameController {
         if (inputOutput.getStringInput().equals("y")) {
             isNewGame = true;
         } else if (inputOutput.getStringInput().equals("n")) {
-//        } else {
             isNewGame = false;
         }
-
-//        switch (inputOutput.getStringInput()) {
-//            case "y":
-//                isNewGame = true;
-//                break;
-//            case "n":
-//                isNewGame = false;
-//                break;
-//        }
     }
 
     private boolean isRoundAlive() {
@@ -129,15 +128,6 @@ public class GameController {
             isRoundAliveTemp = false;
         }
         return isRoundAliveTemp;
-    }
-
-    private int[] getInputCoordinatesFromHuman(String s) {
-        printer.printMessage(s);
-        return inputOutput.getCoordinates();
-    }
-
-    private int[] getCoordinatesFromComputer() {
-        return inputOutput.getCoordinatesFromComputer();
     }
 
 }

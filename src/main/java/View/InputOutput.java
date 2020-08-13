@@ -8,6 +8,7 @@ import java.util.stream.Stream;
 public class InputOutput {
 
     Scanner sc = new Scanner(System.in);
+    Printer printer = new Printer();
 
     public int getIntInput() {
         return sc.nextInt();
@@ -17,7 +18,8 @@ public class InputOutput {
         return sc.next();
     }
 
-    public int[] getCoordinates() {
+    public int[] getInputCoordinatesFromHuman(String message) {
+        printer.printMessage(message);
         //for example A1, D10
         String input = sc.next();
         Map<String, Integer> rowMap = Stream.of(new Object[][]{
@@ -47,7 +49,4 @@ public class InputOutput {
         result[1] = ran.nextInt(10);
         return result;
     }
-
-
-
 }
