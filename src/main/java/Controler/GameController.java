@@ -24,7 +24,9 @@ public class GameController {
 
     public GameController() {
         init();
+    }
 
+    public void run(){
         isNewGame = true;
         while (isNewGame) {
             prepareGame();
