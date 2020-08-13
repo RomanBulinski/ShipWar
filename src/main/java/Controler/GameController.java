@@ -12,12 +12,14 @@ public class GameController {
     Printer printer = new Printer();
     InputOutput inputOutput = new InputOutput();
 
-    PlayersController playersController;
+    BoardsController boardsController;
     Board board1;
     Board board2;
+    PlayersController playersController;
     Player player1;
     Player player2;
 
+    //TODO remove this
     boolean isCellHited;
     boolean isNewGame;
 
@@ -33,16 +35,11 @@ public class GameController {
 
     private void prepareGame() {
 
-       //TODO make BoardsController
-        board1 = new Board();
-        board2 = new Board();
-        board1.setBoard();
-        board2.setBoard();
-        board1.setShipsOnBoard();
-        board2.setShipsOnBoard();
+        boardsController = new BoardsController();
+        board1 = boardsController.getBoard1();
+        board2 = boardsController.getBoard2();
 
         playersController = new PlayersController( board1, board2 , printer, inputOutput);
-
         player1 = playersController.getPlayer1();
         player2 = playersController.getPlayer2();
 
